@@ -1,0 +1,10 @@
+
+```properties
+DATASOURCE_NAME=postgres
+DATABASE_NAME=homechief
+DATABASE_USER=postgres
+DATABASE_PASSWORD=1234
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+
+```
