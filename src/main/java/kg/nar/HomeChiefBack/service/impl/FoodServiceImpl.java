@@ -33,4 +33,9 @@ public class FoodServiceImpl implements FoodService {
     public List<FoodResponse> getAll() {
         return foodMapper.toDtoS(foodRepository.findAll());
     }
+
+    @Override
+    public List<String> getTypes() {
+        return foodTypeRepository.findAll().stream().map(FoodType::getName).toList();
+    }
 }

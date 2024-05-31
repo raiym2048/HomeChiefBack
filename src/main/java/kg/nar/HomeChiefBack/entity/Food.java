@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -17,7 +19,8 @@ public class Food {
     private String description;
     private int price;
     private int discount;
-    private String image;
+    @ElementCollection
+    private List<String> images;
     @ManyToOne
     private FoodType foodType;
 

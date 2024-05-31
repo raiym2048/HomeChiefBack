@@ -3,6 +3,8 @@ package kg.nar.HomeChiefBack.dto.food;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class FoodAddRequest {
@@ -10,6 +12,6 @@ public class FoodAddRequest {
     private String description;
     private int price;
     private int discount;
-    private String image;
+    private List<String> images;
     private Long foodTypeId;
 }

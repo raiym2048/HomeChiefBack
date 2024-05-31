@@ -12,6 +12,7 @@ import kg.nar.HomeChiefBack.service.AuthService;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class ChiefServiceImpl implements ChiefService {
         food.setPrice(foodAddRequest.getPrice());
         food.setDiscount(foodAddRequest.getDiscount());
         food.setFoodType(foodService.getFoodTypeById(foodAddRequest.getFoodTypeId()));
-        food.setImage(foodAddRequest.getImage());
+        food.setImages(foodAddRequest.getImages());
         food.setDescription(foodAddRequest.getDescription());
         foodRepository.save(food);
 

@@ -9,4 +9,6 @@ public interface FoodService {
     FoodType getFoodTypeById(Long id);
 
     List<FoodResponse> getAll();
+
+    List<String> getTypes();
 }
