@@ -1,10 +1,9 @@
 
 ```properties
 DATASOURCE_NAME=postgres
-DATABASE_NAME=homechief
+DATABASE_NAME=railway
 DATABASE_USER=postgres
-DATABASE_PASSWORD=1234
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-
+DATABASE_PASSWORD=rxbtzudoRwDWcwqFPJgMvpwrwoSVMBqR
+DATABASE_HOST=roundhouse.proxy.rlwy.net
+DATABASE_PORT=58795
 ```
