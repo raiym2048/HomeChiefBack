@@ -12,6 +12,5 @@ public class FoodAddRequest {
     private String description;
     private int price;
     private int discount;
-    private List<String> images;
     private Long foodTypeId;
 }
