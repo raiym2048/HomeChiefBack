@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,9 @@ public class ChiefController {
             @RequestHeader("Authorization") String token,
             @RequestPart("file") List<MultipartFile> files,
             @RequestPart("data") String foodDataString) throws JsonProcessingException {  // Note: Changed to String to debug
+        if (files.size() > 5) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot upload more than 5 files");
+        }
         ObjectMapper mapper = new ObjectMapper();
         FoodAddRequest foodAddRequest = mapper.readValue(foodDataString, FoodAddRequest.class);
         System.out.println(foodAddRequest.getName());  // Example of accessing the data
