@@ -12,9 +12,12 @@ import kg.nar.HomeChiefBack.repository.ClientRepository;
 import kg.nar.HomeChiefBack.repository.FoodRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
 import kg.nar.HomeChiefBack.service.ClientService;
+import kg.nar.HomeChiefBack.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -25,6 +28,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final BucketRepository bucketRepository;
     private final FoodMapper foodMapper;
+    private final FileService fileService;
     @Override
     public void addFoodToBucket(Long foodId, int count, String token) {
         User user = authService.getUsernameFromToken(token);
@@ -56,6 +60,11 @@ public class ClientServiceImpl implements ClientService {
         Client client = user.getClient();
         List<Bucket> buckets = client.getBuckets();
         return getResponse(buckets);
+    }
+
+    @Override
+    public Resource getFiles(String name) throws IOException {
+         return fileService.downloadFile(name);
     }
 
     private List<BucketResponse> getResponse(List<Bucket> buckets) {

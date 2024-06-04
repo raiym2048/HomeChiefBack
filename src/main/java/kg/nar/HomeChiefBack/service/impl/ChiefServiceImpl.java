@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,6 +40,13 @@ public class ChiefServiceImpl implements ChiefService {
             createFood(chief, foodAddRequest, user.getId(), files);
         }
         else throw new BadRequestException("User is not a chief");
+    }
+
+    @Override
+    public Object getFiles(String token) throws IOException {
+        User user = authService.getUsernameFromToken(token);
+        return fileService.listFiles(user.getId());
+
     }
 
     private void createFood(Chief chief, FoodAddRequest foodAddRequest, UUID userId, List<MultipartFile> files) {

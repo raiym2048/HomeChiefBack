@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -31,5 +32,9 @@ public class ChiefController {
 
         chiefService.addFood(token,files, foodAddRequest);
         return ResponseEntity.ok("Food added");
+    }
+    @GetMapping("/files")
+    public ResponseEntity<?> getFiles(@RequestHeader("Authorization") String token) throws IOException {
+        return ResponseEntity.ok(chiefService.getFiles(token));
     }
 }
