@@ -1,13 +1,12 @@
 package kg.nar.HomeChiefBack.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,4 +20,8 @@ public class Client {
 
     private String firstname;
     private String lastname;
+    @OneToMany(mappedBy = "client")
+    private List<Bucket> buckets;  // Buckets associated with this client
+
+
 }
