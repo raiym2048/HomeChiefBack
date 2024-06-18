@@ -27,7 +27,7 @@ public class FoodController {
         foodService.comment(cutId, token, commentTitle);
     }
 
-    @GetMapping("/comments/{foodId}")
+    @GetMapping("/review/{foodId}")
     public List<CommentResponse> commentResponses(@PathVariable Long foodId){
         return foodService.getCutComments(foodId);
     }
