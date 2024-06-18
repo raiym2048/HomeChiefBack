@@ -32,14 +32,14 @@ public class ClientController {
         return foodService.getAll();
     }
 
-    @PostMapping("/private/add")
+    @PostMapping("/cart/add")
     private void addFoodToBucket(@RequestHeader("Authorization") String token,
                                  @RequestParam Long foodId, @RequestParam int count){
         clientService.addFoodToBucket(foodId, count, token);
 
     }
 
-    @GetMapping("/private/bucket")
+    @GetMapping("/private/cart")
     private List<BucketResponse> getBucket(@RequestHeader("Authorization") String token){
         return clientService.getBucket(token);
     }
@@ -60,9 +60,4 @@ public class ClientController {
                 .contentType(MediaType.IMAGE_PNG) // Ensure this matches the type of the image
                 .body(image);
     }
-
-
-
-
-
 }

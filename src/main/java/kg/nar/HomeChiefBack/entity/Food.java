@@ -27,5 +27,8 @@ public class Food {
     @ManyToOne
     private Chief chief;
 
+    @OneToMany
+    private List<Comments> comments;
+
 
 }
