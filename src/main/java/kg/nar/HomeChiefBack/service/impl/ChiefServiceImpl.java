@@ -6,13 +6,16 @@ import kg.nar.HomeChiefBack.entity.Food;
 import kg.nar.HomeChiefBack.entity.User;
 import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
+import kg.nar.HomeChiefBack.exception.NotFoundException;
 import kg.nar.HomeChiefBack.repository.FoodRepository;
 import kg.nar.HomeChiefBack.repository.FoodTypeRepository;
+import kg.nar.HomeChiefBack.repository.UserRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.FileService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +32,7 @@ public class ChiefServiceImpl implements ChiefService {
     private final FoodService foodService;
     private final FoodRepository foodRepository;
     private final FileService fileService;
+    private final UserRepository userRepository;
 
     @Override
     public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
@@ -46,6 +50,18 @@ public class ChiefServiceImpl implements ChiefService {
     public Object getFiles(String token) throws IOException {
         User user = authService.getUsernameFromToken(token);
         return fileService.listFiles(user.getId());
+
+    }
+
+    @Override
+    public Chief chiefGetInfo(UUID userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty())
+            throw new NotFoundException("user not found with this id: "+ userId, HttpStatus.NOT_FOUND);
+        if (!userOptional.get().getRole().equals(Role.CHIEF)){
+            throw new BadRequestException("the user is not chief!");
+        }
+        return userOptional.get().getChief();
 
     }
 
