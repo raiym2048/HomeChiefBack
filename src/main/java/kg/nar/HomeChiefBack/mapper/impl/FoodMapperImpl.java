@@ -3,6 +3,7 @@ package kg.nar.HomeChiefBack.mapper.impl;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.entity.Comments;
+import kg.nar.HomeChiefBack.entity.Cut;
 import kg.nar.HomeChiefBack.entity.Food;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import org.springframework.stereotype.Component;
@@ -40,9 +41,9 @@ public class FoodMapperImpl implements FoodMapper{
     }
 
     @Override
-    public List<CommentResponse> commentToDtoS(Food food) {
+    public List<CommentResponse> commentToDtoS(Cut cut) {
         List<CommentResponse> commentResponses = new ArrayList<>();
-        for (Comments comments: food.getComments()){
+        for (Comments comments: cut.getComments()){
             commentResponses.add(commentToDto(comments));
         }
         return commentResponses;

@@ -1,17 +1,13 @@
 package kg.nar.HomeChiefBack.service.impl;
 
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
+import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
-import kg.nar.HomeChiefBack.entity.Comments;
-import kg.nar.HomeChiefBack.entity.Food;
-import kg.nar.HomeChiefBack.entity.FoodType;
-import kg.nar.HomeChiefBack.entity.User;
+import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
-import kg.nar.HomeChiefBack.repository.CommentRepository;
-import kg.nar.HomeChiefBack.repository.FoodRepository;
-import kg.nar.HomeChiefBack.repository.FoodTypeRepository;
+import kg.nar.HomeChiefBack.repository.*;
 import kg.nar.HomeChiefBack.service.AuthService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +26,8 @@ public class FoodServiceImpl implements FoodService {
     private final FoodRepository foodRepository;
     private final AuthService authService;
     private final CommentRepository commentRepository;
+    private final CutRepository cutRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public FoodType getFoodTypeById(Long id) {
@@ -51,30 +49,48 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public void comment(Long foodId, String token, String title) {
+    public void comment(Long cutId, String token, String title) {
         User user = authService.getUsernameFromToken(token);
-        Optional<Food> food = foodRepository.findById(foodId);
-        if (food.isEmpty())
-            throw new NotFoundException("not found food with id: "+ foodId, HttpStatus.NOT_FOUND);
+        Optional<Cut> cut = cutRepository.findById(cutId);
+        if (cut.isEmpty())
+            throw new NotFoundException("not found cut with id: "+ cutId, HttpStatus.NOT_FOUND);
 
         Comments comment = new Comments();
-        comment.setFood(food.get());
+        comment.setCut(cut.get());
         comment.setUser(user);
         comment.setTime(LocalDateTime.now());
         comment.setTitle(title);
         commentRepository.save(comment);
 
-        food.get().getComments().add(comment);
+        cut.get().getComments().add(comment);
 
-        foodRepository.save(food.get());
+        cutRepository.save(cut.get());
 
     }
 
     @Override
-    public List<CommentResponse> getFoodComments(Long foodId) {
-        Optional<Food> foodOptional = foodRepository.findById(foodId);
+    public List<CommentResponse> getCutComments(Long cutId) {
+        Optional<Cut> cutOptional = cutRepository.findById(cutId);
+        if (cutOptional.isEmpty())
+            throw new NotFoundException("cut not found with id: "+ cutId, HttpStatus.NOT_FOUND);
+        return foodMapper.commentToDtoS(cutOptional.get());
+    }
+
+    @Override
+    public void reviewFood(String token, ReviewRequest request) {
+        User user = authService.getUsernameFromToken(token);
+        Optional<Food> foodOptional = foodRepository.findById(request.getFoodId());
         if (foodOptional.isEmpty())
-            throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
-        return foodMapper.commentToDtoS(foodOptional.get());
+            throw new NotFoundException("food not found with id: "+ request.getFoodId(), HttpStatus.NOT_FOUND);
+
+        Review review = new Review();
+        review.setStar(review.getStar());
+        review.setFood(foodOptional.get());
+        review.setUser(user);
+        review.setTitle(review.getTitle());
+        reviewRepository.save(review);
+
+        foodOptional.get().getReviews().add(review);
+        foodRepository.save(foodOptional.get());
     }
 }

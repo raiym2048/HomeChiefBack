@@ -1,6 +1,8 @@
 package kg.nar.HomeChiefBack.service;
 
+import com.amazonaws.services.dynamodbv2.xspec.L;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
+import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.entity.FoodType;
 
@@ -13,7 +15,9 @@ public interface FoodService {
 
     List<String> getTypes();
 
-    void comment(Long foodId, String token, String commentTitle);
+    void comment(Long cutId, String token, String commentTitle);
 
-    List<CommentResponse> getFoodComments(Long foodId);
+    List<CommentResponse> getCutComments(Long foodId);
+
+    void reviewFood(String token, ReviewRequest request);
 }

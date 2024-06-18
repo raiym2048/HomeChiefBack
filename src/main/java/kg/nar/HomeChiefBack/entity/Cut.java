@@ -1,14 +1,13 @@
 package kg.nar.HomeChiefBack.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
-public class Post {
+public class Cut {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +17,13 @@ public class Post {
     private String name;
     private String description;
 
-    private double starts;
+    private double stars;
+
+    @ManyToOne
+    private Food food;
+
+    @OneToMany
+    private List<Comments> comments;
 
 
 }

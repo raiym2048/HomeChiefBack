@@ -2,6 +2,7 @@ package kg.nar.HomeChiefBack.mapper;
 
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
+import kg.nar.HomeChiefBack.entity.Cut;
 import kg.nar.HomeChiefBack.entity.Food;
 import kg.nar.HomeChiefBack.entity.FoodType;
 
@@ -12,5 +13,5 @@ public interface FoodMapper {
 
     FoodResponse toDto(Food food);
 
-    List<CommentResponse> commentToDtoS(Food food);
+    List<CommentResponse> commentToDtoS(Cut cut);
 }

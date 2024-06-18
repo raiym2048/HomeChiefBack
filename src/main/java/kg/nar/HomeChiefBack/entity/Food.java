@@ -28,7 +28,8 @@ public class Food {
     private Chief chief;
 
     @OneToMany
-    private List<Comments> comments;
+    private List<Review> reviews;
+
 
 
 }
