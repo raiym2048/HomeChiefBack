@@ -1,6 +1,5 @@
 package kg.nar.HomeChiefBack.service;
 
-import com.amazonaws.services.dynamodbv2.xspec.L;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;

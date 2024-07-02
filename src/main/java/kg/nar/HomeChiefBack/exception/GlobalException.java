@@ -1,6 +1,5 @@
 package kg.nar.HomeChiefBack.exception;
 
-import com.amazonaws.services.ecs.model.BlockedException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -42,10 +41,6 @@ public class GlobalException {
                 e.getMessage());
     }
 
-    @ExceptionHandler(BlockedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionResponse handleBlockedException(BlockedException e) {
-        return new ExceptionResponse(HttpStatus.FORBIDDEN, e.getMessage());
-    }
+
 
 }

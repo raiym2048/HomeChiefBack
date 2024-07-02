@@ -1,0 +1,56 @@
+version: '3.8'
+networks:
+  homechief:
+
+volumes:
+  db-data:
+    driver: local
+
+services:
+  homechief:
+    image: homechief-homechief
+    build:
+      context: .
+    container_name: homechief-homechief
+    depends_on:
+      - flyway
+    command: ["./mvnw", "spring-boot:run"]  # Ensure you are using the Maven wrhomechiefer and the spring-boot plugin
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/homechief
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_DB: homechief
+    ports:
+      - '8080:8080'
+    networks:
+      - homechief
+
+  flyway:
+    image: flyway/flyway:latest  # Using the official Flyway image which should have the latest JDBC drivers
+    command: -url=jdbc:postgresql://postgres:5432/homechief -schemas=public -user=postgres -password=1234 migrate
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./db/migration:/flyway/sql
+    networks:
+      - homechief
+
+  postgres:
+    image: postgres:15.1-alpine
+    container_name: homechief-database-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: homechief
+    ports:
+      - "5434:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - homechief

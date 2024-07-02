@@ -23,29 +23,10 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 
 
-    private  String projectId = "regal-thought-424914-c3";
-    private  String bucketName = "homechief";
     @Override
     public String uploadFile(MultipartFile file, UUID userId) throws IOException {
 
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
-
-        // Generate a new filename
-        String newFileName = generateNewFileName(Objects.requireNonNull(file.getOriginalFilename()));
-
-
-
-        BlobId blob = BlobId.of(bucketName, userId+"/"+ newFileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blob).build();
-
-
-        // Use the bytes from the uploaded file
-        byte[] fileBytes = file.getBytes();
-
-        storage.create(blobInfo, fileBytes);
-
-        System.out.println("File uploaded to bucket with new filename");
-        return newFileName;
+        return null;
     }
 
     private String generateNewFileName(String originalFileName) {
@@ -58,14 +39,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<String> listFiles(UUID userId)throws IOException {
-        Storage storage = StorageOptions.newBuilder().setProjectId
-                (projectId).build().getService();
-        List<String> files = new ArrayList<>();
-
-        for (Blob blob : storage.list(bucketName+"/"+userId, Storage.BlobListOption.currentDirectory(), Storage.BlobListOption.prefix("")).iterateAll()){
-            files.add(blob.getName());
-        }
-        return files;
+        return null;
     }
 
 
@@ -83,12 +57,7 @@ public class FileServiceImpl implements FileService {
     }*/
     @Override
     public Resource downloadFile(String objectName) throws IOException {
-        Storage storage = StorageOptions.newBuilder().setProjectId
-                (projectId).build().getService();
-        BlobId blobId = BlobId.of(bucketName, objectName);
-        Blob blob = storage.get(blobId);
-
-        byte[] content = blob.getContent();
-        return new ByteArrayResource(content);    }
+        return null;
+    }
 
 }
