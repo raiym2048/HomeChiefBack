@@ -27,7 +27,6 @@ public class User implements UserDetails {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
-    private String email;
     private String password;
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
@@ -53,7 +52,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return phoneNumber;
     }
 
     @Override

@@ -38,12 +38,9 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     @Override
     public void register(RegisterRequest registerRequest) {
-        if (userRepository.existsByEmail(registerRequest.getEmail()))
-            throw new BadRequestException("User with this email already exists");
         if (userRepository.existsByPhoneNumber(registerRequest.getPhoneNumber()))
             throw new BadRequestException("User with this phone number already exists");
         User user = new User();
-        user.setEmail(registerRequest.getEmail());
         user.setPhoneNumber(registerRequest.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         if (registerRequest.getIsChief()){
@@ -59,21 +56,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest registerRequest) {
-        if (!userRepository.existsByEmail(registerRequest.getEmail()))
-            throw new BadRequestException("User with this email does not exist");
-        Optional<User> user = userRepository.findByEmail(registerRequest.getEmail());
+
+        Optional<User> user = userRepository.findByPhoneNumber(registerRequest.getPhoneNumber());
         String token;
         if (user.isEmpty())
-            throw new BadRequestException("User with this email does not exist");
+            throw new BadRequestException("User with this phone number does not exist");
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), registerRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerRequest.getPhoneNumber(), registerRequest.getPassword()));
             token = jwtService.generateToken(user.get());
         } catch (Exception e) {
             throw new BadRequestException("Invalid email or password");
         }
         if (user.get().getRole().equals(Role.CLIENT))
-            return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(), registerRequest.getEmail(), user.get().getId(), token);
-        return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(), registerRequest.getEmail(), user.get().getId(), token);
+            return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(),  user.get().getId(), token);
+        return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(),  user.get().getId(), token);
     }
 
     @Override
@@ -89,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        return userRepository.findByEmail(String.valueOf(object.get("sub"))).orElseThrow(() -> new BadCredentialsException("No user in database with ur token! ReLogIn pls"));
+        return userRepository.findByPhoneNumber(String.valueOf(object.get("sub"))).orElseThrow(() -> new BadCredentialsException("No user in database with ur token! ReLogIn pls"));
     }
 
     private Client registerClient() {

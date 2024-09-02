@@ -12,5 +12,5 @@ public class FoodAddRequest {
     private String description;
     private int price;
     private int discount;
-    private Long foodTypeId;
+    private String foodType;
 }

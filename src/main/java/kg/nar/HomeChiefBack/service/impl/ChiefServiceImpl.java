@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,7 +72,7 @@ public class ChiefServiceImpl implements ChiefService {
         food.setName(foodAddRequest.getName());
         food.setPrice(foodAddRequest.getPrice());
         food.setDiscount(foodAddRequest.getDiscount());
-        food.setFoodType(foodService.getFoodTypeById(foodAddRequest.getFoodTypeId()));
+        food.setFoodType(foodService.getFoodTypeByName(foodAddRequest.getFoodType()));
         food.setImages(uploadFoodsImages(files, userId));
         food.setDescription(foodAddRequest.getDescription());
         foodRepository.save(food);
@@ -79,14 +80,18 @@ public class ChiefServiceImpl implements ChiefService {
     }
 
     private List<String> uploadFoodsImages(List<MultipartFile> files, UUID userId) {
-        List<String> images = files.stream().map(file -> {
+        List<String> images = new ArrayList<>();
+        int i = 0;
+        for (MultipartFile file : files) {
             try {
-                return fileService.uploadFile(file, userId);
+                images.add(fileService.uploadFile(file, userId, i));
+                i++;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
-        }).toList();
+        }
+
         return images;
     }
 }

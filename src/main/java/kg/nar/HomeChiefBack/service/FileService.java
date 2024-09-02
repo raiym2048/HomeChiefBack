@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface FileService {
-    String uploadFile(MultipartFile file, UUID userId) throws IOException;
+    String uploadFile(MultipartFile file, UUID userId, int i) throws IOException;
 
     List<String> listFiles(UUID userId)throws IOException;
 

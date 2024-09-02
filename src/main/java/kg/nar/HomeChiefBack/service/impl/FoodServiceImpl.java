@@ -39,6 +39,15 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public FoodType getFoodTypeByName(String name) {
+        Optional<FoodType> foodType = foodTypeRepository.findByName(name);
+        if (foodType.isPresent())
+            return foodType.get();
+        else
+            throw new BadRequestException("Food type not found");
+    }
+
+    @Override
     public List<FoodResponse> getAll() {
         return foodMapper.toDtoS(foodRepository.findAll());
     }

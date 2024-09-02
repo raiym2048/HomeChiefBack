@@ -10,6 +10,8 @@ import java.util.List;
 public interface FoodService {
     FoodType getFoodTypeById(Long id);
 
+    FoodType getFoodTypeByName(String name);
+
     List<FoodResponse> getAll();
 
     List<String> getTypes();
