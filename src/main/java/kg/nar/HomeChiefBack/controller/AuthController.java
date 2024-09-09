@@ -4,6 +4,7 @@ package kg.nar.HomeChiefBack.controller;
 import kg.nar.HomeChiefBack.dto.LoginRequest;
 import kg.nar.HomeChiefBack.dto.RegisterRequest;
 import kg.nar.HomeChiefBack.dto.auth.LoginResponse;
+import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

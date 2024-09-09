@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.enums;
 
 public enum ChiefRank {
-    CHIEF, JUNIOR, SENIOR, MASTER
+
+    NOT_VERIFIED, CHIEF, JUNIOR, SENIOR, MASTER
 }

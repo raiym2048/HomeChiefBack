@@ -1,15 +1,17 @@
 package kg.nar.HomeChiefBack.service.impl;
 
+import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
-import kg.nar.HomeChiefBack.entity.Chief;
-import kg.nar.HomeChiefBack.entity.Food;
-import kg.nar.HomeChiefBack.entity.User;
+import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
+import kg.nar.HomeChiefBack.repository.ChiefRepository;
 import kg.nar.HomeChiefBack.repository.FoodRepository;
 import kg.nar.HomeChiefBack.repository.FoodTypeRepository;
 import kg.nar.HomeChiefBack.repository.UserRepository;
+import kg.nar.HomeChiefBack.repository.address.AddressRepository;
+import kg.nar.HomeChiefBack.repository.address.AddressTypeRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.FileService;
@@ -34,6 +36,9 @@ public class ChiefServiceImpl implements ChiefService {
     private final FoodRepository foodRepository;
     private final FileService fileService;
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
+    private final AddressTypeRepository addressTypeRepository;
+    private final ChiefRepository chiefRepository;
 
     @Override
     public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
@@ -64,6 +69,34 @@ public class ChiefServiceImpl implements ChiefService {
         }
         return userOptional.get().getChief();
 
+    }
+
+    @Override
+    public void completeRegistration(AddressRequest addressRequest, String token) {
+        User user = authService.getUsernameFromToken(token);
+        if (!user.getRole().equals(Role.CHIEF)) {
+            throw new BadRequestException("User is not a chief");
+        }
+        Chief chief = user.getChief();
+        chief.setAddress(createAddress(addressRequest));
+        chief.setFirstname(addressRequest.getFirstname());
+        chief.setLastname(addressRequest.getLastname());
+        chiefRepository.save(chief);
+    }
+
+    private Address createAddress(AddressRequest addressRequest) {
+        Address address = new Address();
+        Optional<AddressType> addressTypeOptional = addressTypeRepository.findByValue(addressRequest.getType());
+        if (addressTypeOptional.isEmpty()) {
+            throw new BadRequestException("AddressType already exists");
+        }
+        address.setType(addressTypeOptional.get());
+        if(addressRepository.findById(addressRequest.getParentId()).isEmpty()){
+            throw new BadRequestException("Parent address does not exist");
+        }
+        address.setParentId(addressRequest.getParentId());
+        address.setValue(addressRequest.getValue());
+        return addressRepository.save(address);
     }
 
     private void createFood(Chief chief, FoodAddRequest foodAddRequest, UUID userId, List<MultipartFile> files) {

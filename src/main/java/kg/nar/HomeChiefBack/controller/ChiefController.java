@@ -2,6 +2,7 @@ package kg.nar.HomeChiefBack.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.Chief;
 import kg.nar.HomeChiefBack.service.ChiefService;
@@ -20,6 +21,11 @@ import java.util.UUID;
 @RequestMapping("/chief")
 public class ChiefController {
     private final ChiefService chiefService;
+
+    @PostMapping("/complete")
+    public void complete (@RequestBody AddressRequest addressRequest, @RequestHeader("Authorization") String token){
+        chiefService.completeRegistration(addressRequest, token);
+    }
     @PostMapping(value = "/food/add", consumes = "multipart/form-data")
     public ResponseEntity<?> addFood(
             @RequestHeader("Authorization") String token,

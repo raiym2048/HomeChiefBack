@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
     private Chief registerChief() {
         Chief chief = new Chief();
         chief.setActivated(false);
-        chief.setRank(ChiefRank.CHIEF);
+        chief.setRank(ChiefRank.NOT_VERIFIED);
         return chiefRepository.save(chief);
     }
 }

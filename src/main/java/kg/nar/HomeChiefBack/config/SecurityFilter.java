@@ -1,5 +1,12 @@
 package kg.nar.HomeChiefBack.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,21 +22,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
-public class    SecurityFilter {
+public class  SecurityFilter {
+/*
     private final JwtFilter jwtFilter;
+*/
+    private static final String[] WHITE_LIST_URL = { "/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
+            "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
+            "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
+            "/api/test/**", "/authenticate" };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/auth/**","/public/**",  "/**").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**","/public/**").permitAll()
+/*
                         .requestMatchers("file/**").hasRole("CHIEF")
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+*/
+                        .requestMatchers(WHITE_LIST_URL).permitAll()
+                        .anyRequest().permitAll())
 
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
+

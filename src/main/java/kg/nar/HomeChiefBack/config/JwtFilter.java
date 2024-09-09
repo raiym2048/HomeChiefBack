@@ -1,3 +1,4 @@
+/*
 package kg.nar.HomeChiefBack.config;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -71,3 +72,4 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+*/
