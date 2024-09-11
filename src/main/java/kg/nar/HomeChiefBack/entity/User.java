@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,12 +30,17 @@ public class User implements UserDetails {
     private UUID id;
     private String password;
     private String phoneNumber;
+    @Unique
+    private String username;
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToOne
     private Client client;
     @OneToOne
     private Chief chief;
+
+    @ManyToMany
+    private List<Food> favoriteFoods;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

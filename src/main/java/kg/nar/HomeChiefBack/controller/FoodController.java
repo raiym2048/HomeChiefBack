@@ -1,6 +1,7 @@
 package kg.nar.HomeChiefBack.controller;
 
 
+import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.service.FoodService;
@@ -17,7 +18,7 @@ public class FoodController {
     private final FoodService foodService;
 
     @GetMapping("/types")
-    public List<String> foodTypes(){
+    public List<ObjectDto> foodTypes(){
         return foodService.getTypes();
     }
 
@@ -37,5 +38,17 @@ public class FoodController {
         foodService.reviewFood(token, request);
     }
 
+    @PostMapping("/type/add")
+    public void addType(@RequestParam String type){
+        foodService.addType(type);
+    }
+    @DeleteMapping("/type/delete")
+    public void deleteType(@RequestParam String type){
+        foodService.deleteType(type);
+    }
+    @PutMapping("/type/refactor")
+    public void refactorType(@RequestParam String oldType, @RequestParam String newType){
+        foodService.refactor(oldType, newType);
+    }
 }
 

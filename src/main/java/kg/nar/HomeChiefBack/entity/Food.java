@@ -3,17 +3,20 @@ package kg.nar.HomeChiefBack.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class Food {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "food_seq")
-    @SequenceGenerator(name = "food_seq", sequenceName = "food_seq", initialValue = 10000, allocationSize = 1)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     private String name;
     private String description;
@@ -29,6 +32,15 @@ public class Food {
 
     @OneToMany
     private List<Review> reviews;
+
+    @ManyToMany
+    private List<User> likedUsers;
+
+    @OneToMany
+    private List<Comments> comments;
+    @ManyToMany
+    private List<User> views;
+
 
 
 

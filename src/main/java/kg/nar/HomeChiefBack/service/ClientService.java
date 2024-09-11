@@ -5,9 +5,10 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public interface ClientService {
-    void addFoodToBucket(Long foodId, int count, String token);
+    void addFoodToBucket(UUID foodId, int count, String token);
 
     List<BucketResponse> getBucket(String token);
 

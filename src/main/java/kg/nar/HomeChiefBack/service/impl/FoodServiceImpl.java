@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.service.impl;
 
+import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
@@ -48,13 +49,18 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public List<FoodResponse> getAll() {
-        return foodMapper.toDtoS(foodRepository.findAll());
+    public List<FoodResponse> getAll(String token) {
+        User user = null;
+        if (token != null && !token.isEmpty()) {
+            user = authService.getUsernameFromToken(token);
+        }
+
+        return foodMapper.toDtoS(foodRepository.findAll(), user);
     }
 
     @Override
-    public List<String> getTypes() {
-        return foodTypeRepository.findAll().stream().map(FoodType::getName).toList();
+    public List<ObjectDto> getTypes() {
+        return foodMapper.toDtoStype(foodTypeRepository.findAll());
     }
 
     @Override
@@ -101,5 +107,31 @@ public class FoodServiceImpl implements FoodService {
 
         foodOptional.get().getReviews().add(review);
         foodRepository.save(foodOptional.get());
+    }
+
+    @Override
+    public void addType(String type) {
+        Optional<FoodType> foodType = foodTypeRepository.findByName(type);
+        if (foodType.isEmpty()){
+            FoodType newFoodType = new FoodType();
+            newFoodType.setName(type);
+            foodTypeRepository.save(newFoodType);
+        }
+
+    }
+
+    @Override
+    public void deleteType(String type) {
+        foodTypeRepository.deleteByName(type);
+    }
+
+    @Override
+    public void refactor(String oldType, String newType) {
+        Optional<FoodType> foodType = foodTypeRepository.findByName(oldType);
+        if (foodType.isEmpty())
+            throw new BadRequestException("такой тип не существует!: "+ oldType);
+        foodType.get().setName(newType);
+        foodTypeRepository.save(foodType.get());
+
     }
 }

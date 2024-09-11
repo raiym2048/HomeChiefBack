@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.service;
 
+import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
@@ -12,13 +13,19 @@ public interface FoodService {
 
     FoodType getFoodTypeByName(String name);
 
-    List<FoodResponse> getAll();
+    List<FoodResponse> getAll(String token);
 
-    List<String> getTypes();
+    List<ObjectDto> getTypes();
 
     void comment(Long cutId, String token, String commentTitle);
 
     List<CommentResponse> getCutComments(Long foodId);
 
     void reviewFood(String token, ReviewRequest request);
+
+    void addType(String type);
+
+    void deleteType(String type);
+
+    void refactor(String oldType, String newType);
 }

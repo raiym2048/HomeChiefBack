@@ -40,7 +40,10 @@ public class AuthServiceImpl implements AuthService {
     public void register(RegisterRequest registerRequest) {
         if (userRepository.existsByPhoneNumber(registerRequest.getPhoneNumber()))
             throw new BadRequestException("User with this phone number already exists");
+        if (userRepository.existsByUsername(registerRequest.getUsername()))
+            throw new BadRequestException("User with this username already exists");
         User user = new User();
+        user.setUsername(registerRequest.getUsername());
         user.setPhoneNumber(registerRequest.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         if (registerRequest.getIsChief()){

@@ -15,6 +15,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,13 +27,13 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/foods")
-    private List<FoodResponse> foodResponses(){
-        return foodService.getAll();
+    private List<FoodResponse> foodResponses(@RequestHeader(required = false, name = "Authorization") String token) {
+        return foodService.getAll(token);
     }
 
     @PostMapping("/cart/add")
     private void addFoodToBucket(@RequestHeader("Authorization") String token,
-                                 @RequestParam Long foodId, @RequestParam int count){
+                                 @RequestParam UUID foodId, @RequestParam int count){
         clientService.addFoodToBucket(foodId, count, token);
 
     }

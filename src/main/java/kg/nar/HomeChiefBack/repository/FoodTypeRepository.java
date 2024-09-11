@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface FoodTypeRepository extends JpaRepository<FoodType, Long> {
 
     Optional<FoodType> findByName(String name);
+
+    void deleteByName(String type);
 }

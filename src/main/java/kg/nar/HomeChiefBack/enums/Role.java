@@ -1,5 +1,5 @@
 package kg.nar.HomeChiefBack.enums;
 
 public enum Role {
-    CLIENT, ADMIN, CHIEF
+    CLIENT, ADMIN, CHIEF, MANAGER
 }

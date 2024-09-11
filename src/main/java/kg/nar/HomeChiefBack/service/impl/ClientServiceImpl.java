@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class ClientServiceImpl implements ClientService {
     private final FoodMapper foodMapper;
     private final FileService fileService;
     @Override
-    public void addFoodToBucket(Long foodId, int count, String token) {
+    public void addFoodToBucket(UUID foodId, int count, String token) {
         User user = authService.getUsernameFromToken(token);
         if (!user.getRole().equals(Role.CLIENT)) {
             throw new RuntimeException("User is not client!");
@@ -71,7 +72,7 @@ public class ClientServiceImpl implements ClientService {
         return buckets.stream().map(bucket -> {
             BucketResponse bucketResponse = new BucketResponse();
             bucketResponse.setCount(bucket.getCount());
-            bucketResponse.setFood(foodMapper.toDto(bucket.getFood()));
+            bucketResponse.setFood(foodMapper.toDto(bucket.getFood(), null));
             return bucketResponse;
         }).toList();
     }
