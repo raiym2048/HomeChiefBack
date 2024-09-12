@@ -23,7 +23,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
     @Value("${upload.dir}")
     private String uploadDir = "/home/admins/StartUps/HomeChief/backend/HomeChiefBack";
-    //private String uploadDir = "/home/raiym/IdeaProjects/HomeChiefBack";
+    //private String uploadDir = "/Users/bambook/Downloads/HomeChiefBack";
 
 
     @Override

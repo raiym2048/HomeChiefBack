@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,6 +50,14 @@ public class FoodController {
     @PutMapping("/type/refactor")
     public void refactorType(@RequestParam String oldType, @RequestParam String newType){
         foodService.refactor(oldType, newType);
+    }
+    @PostMapping("/like/{foodId}")
+    public Boolean likeFood(@RequestHeader("Authorization") String token, @PathVariable UUID foodId){
+        return foodService.like(token, foodId);
+    }
+    @PostMapping("/favorite/{foodId}")
+    public Boolean favoriteFood(@RequestHeader("Authorization") String token, @PathVariable UUID foodId){
+        return foodService.favorite(token, foodId);
     }
 }
 

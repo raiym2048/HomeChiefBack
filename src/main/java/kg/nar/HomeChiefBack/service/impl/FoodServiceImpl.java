@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,10 +30,11 @@ public class FoodServiceImpl implements FoodService {
     private final CommentRepository commentRepository;
     private final CutRepository cutRepository;
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public FoodType getFoodTypeById(Long id) {
-        Optional<FoodType> foodType = foodTypeRepository.findById(id);
+    public FoodType getFoodType(String type) {
+        Optional<FoodType> foodType = foodTypeRepository.findByName(type);
         if (foodType.isPresent())
             return foodType.get();
         else
@@ -133,5 +135,36 @@ public class FoodServiceImpl implements FoodService {
         foodType.get().setName(newType);
         foodTypeRepository.save(foodType.get());
 
+    }
+
+    @Override
+    public Boolean like(String token, UUID foodId) {
+        User user = authService.getUsernameFromToken(token);
+        Optional<Food> foodOptional = foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+        if (foodOptional.get().getLikedUsers().contains(user)){
+            foodOptional.get().getLikedUsers().remove(user);
+        }else {
+            foodOptional.get().getLikedUsers().add(user);
+        }
+        foodRepository.save(foodOptional.get());
+        return foodOptional.get().getLikedUsers().contains(user);
+    }
+
+    @Override
+    public Boolean favorite(String token, UUID foodId) {
+        User user = authService.getUsernameFromToken(token);
+
+        Optional<Food> foodOptional = foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+        if (user.getFavoriteFoods().contains(foodOptional.get())){
+            user.getFavoriteFoods().remove(foodOptional.get());
+        }else {
+            user.getFavoriteFoods().add(foodOptional.get());
+        }
+        userRepository.save(user);
+        return user.getFavoriteFoods().contains(foodOptional.get());
     }
 }

@@ -7,9 +7,10 @@ import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.entity.FoodType;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface FoodService {
-    FoodType getFoodTypeById(Long id);
+    FoodType getFoodType(String name);
 
     FoodType getFoodTypeByName(String name);
 
@@ -28,4 +29,8 @@ public interface FoodService {
     void deleteType(String type);
 
     void refactor(String oldType, String newType);
+
+    Boolean like(String token, UUID foodId);
+
+    Boolean favorite(String token, UUID foodId);
 }
