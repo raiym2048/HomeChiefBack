@@ -6,10 +6,7 @@ import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
-import kg.nar.HomeChiefBack.repository.ChiefRepository;
-import kg.nar.HomeChiefBack.repository.FoodRepository;
-import kg.nar.HomeChiefBack.repository.FoodTypeRepository;
-import kg.nar.HomeChiefBack.repository.UserRepository;
+import kg.nar.HomeChiefBack.repository.*;
 import kg.nar.HomeChiefBack.repository.address.AddressRepository;
 import kg.nar.HomeChiefBack.repository.address.AddressTypeRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
@@ -39,6 +36,7 @@ public class ChiefServiceImpl implements ChiefService {
     private final AddressRepository addressRepository;
     private final AddressTypeRepository addressTypeRepository;
     private final ChiefRepository chiefRepository;
+    private final RequestStatusRepository requestStatusRepository;
 
     @Override
     public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
@@ -81,6 +79,10 @@ public class ChiefServiceImpl implements ChiefService {
         chief.setAddress(createAddress(addressRequest));
         chief.setFirstname(addressRequest.getFirstname());
         chief.setLastname(addressRequest.getLastname());
+        Optional<RequestStatus> requestStatusOptional = requestStatusRepository.findByStatus(addressRequest.getStatus());
+        if (requestStatusOptional.isEmpty())
+            throw new NotFoundException("такой статус не найден!", HttpStatus.NOT_FOUND);
+        chief.setActivated(requestStatusOptional.get());
         chiefRepository.save(chief);
     }
 
