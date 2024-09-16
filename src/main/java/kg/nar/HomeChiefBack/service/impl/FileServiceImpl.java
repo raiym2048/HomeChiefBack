@@ -2,7 +2,7 @@ package kg.nar.HomeChiefBack.service.impl;
 
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import com.google.api.client.util.Value;
+import org.springframework.beans.factory.annotation.Value;
 import kg.nar.HomeChiefBack.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
     @Value("${upload.dir}")
-    private String uploadDir = "/home/admins/StartUps/HomeChief/backend/HomeChiefBack";
+    private String uploadDir;
     //private String uploadDir = "/Users/bambook/Downloads/HomeChiefBack";
 
 
