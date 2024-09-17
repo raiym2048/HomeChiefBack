@@ -1,11 +1,13 @@
 package kg.nar.HomeChiefBack.controller;
 
+import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.bucket.BucketResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.repository.CutRepository;
 import kg.nar.HomeChiefBack.service.ClientService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,21 +44,12 @@ public class ClientController {
     private List<BucketResponse> getBucket(@RequestHeader("Authorization") String token){
         return clientService.getBucket(token);
     }
-
+    @Value("${upload.dir}")
+    private String s;
     @GetMapping("/file")
-    public ResponseEntity<Resource> getFile(@RequestParam String name) throws IOException {
-        Resource image = clientService.getFiles(name);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + name + "\"");
-        headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
-        headers.add(HttpHeaders.PRAGMA, "no-cache");
-        headers.add(HttpHeaders.EXPIRES, "0");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(image.contentLength())
-                .contentType(MediaType.IMAGE_PNG) // Ensure this matches the type of the image
-                .body(image);
+    public ObjectDto getFile(@RequestParam String name) throws IOException {
+        ObjectDto dto = new ObjectDto();
+        dto.setName(s+"/"+name);
+        return dto;
     }
 }
