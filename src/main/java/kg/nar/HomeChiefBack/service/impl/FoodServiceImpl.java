@@ -66,7 +66,7 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public void comment(Long cutId, String token, String title) {
+    public void comment(UUID cutId, String token, String title) {
         User user = authService.getUsernameFromToken(token);
         Optional<Cut> cut = cutRepository.findById(cutId);
         if (cut.isEmpty())
@@ -86,7 +86,7 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public List<CommentResponse> getCutComments(Long cutId) {
+    public List<CommentResponse> getCutComments(UUID cutId) {
         Optional<Cut> cutOptional = cutRepository.findById(cutId);
         if (cutOptional.isEmpty())
             throw new NotFoundException("cut not found with id: "+ cutId, HttpStatus.NOT_FOUND);
@@ -167,4 +167,12 @@ public class FoodServiceImpl implements FoodService {
         userRepository.save(user);
         return user.getFavoriteFoods().contains(foodOptional.get());
     }
+
+    @Override
+    public FoodType getFoodTypeById(UUID foodTypeId) {
+        Optional<FoodType> foodType = foodTypeRepository.findById(foodTypeId);
+        if (foodType.isPresent())
+            return foodType.get();
+        else
+            throw new BadRequestException("Food type not found");    }
 }

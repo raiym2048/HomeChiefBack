@@ -98,7 +98,7 @@ public class ChiefServiceImpl implements ChiefService {
         food.setName(foodAddRequest.getName());
         food.setPrice(foodAddRequest.getPrice());
         food.setDiscount(foodAddRequest.getDiscount());
-        food.setFoodType(foodService.getFoodTypeByName(foodAddRequest.getFoodType()));
+        food.setFoodType(foodService.getFoodTypeById(foodAddRequest.getFoodTypeId()));
         food.setImages(uploadFoodsImages(files, userId));
         food.setDescription(foodAddRequest.getDescription());
         foodRepository.save(food);

@@ -3,15 +3,20 @@ package kg.nar.HomeChiefBack.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class FoodType {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "food_type_seq")
-    @SequenceGenerator(name = "food_type_seq", sequenceName = "food_type_seq", initialValue = 10000, allocationSize = 1)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
+
     private String name;
 
 

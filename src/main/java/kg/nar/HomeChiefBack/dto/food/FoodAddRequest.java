@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,5 +13,5 @@ public class FoodAddRequest {
     private String description;
     private int price;
     private int discount;
-    private String foodType;
+    private UUID foodTypeId;
 }

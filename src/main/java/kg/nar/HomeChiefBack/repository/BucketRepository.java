@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface BucketRepository extends JpaRepository<Bucket, Long>{
+public interface BucketRepository extends JpaRepository<Bucket, UUID>{
     List<Bucket> findByClientId(UUID clientId);
 
 }

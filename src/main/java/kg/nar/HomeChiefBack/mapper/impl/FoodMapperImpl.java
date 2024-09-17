@@ -73,6 +73,7 @@ public class FoodMapperImpl implements FoodMapper{
 
     private ObjectDto toDtoType(FoodType foodType) {
         ObjectDto objectDto = new ObjectDto();
+        objectDto.setId(foodType.getId());
         objectDto.setName(foodType.getName());
         return objectDto;
     }

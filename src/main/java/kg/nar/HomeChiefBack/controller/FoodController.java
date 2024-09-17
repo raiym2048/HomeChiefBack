@@ -25,12 +25,12 @@ public class FoodController {
 
 
     @PostMapping("/comment/{cutId}")
-    public void comment(@RequestHeader("Authorization") String token, @PathVariable Long cutId, @RequestParam String commentTitle){
+    public void comment(@RequestHeader("Authorization") String token, @PathVariable UUID cutId, @RequestParam String commentTitle){
         foodService.comment(cutId, token, commentTitle);
     }
 
     @GetMapping("/review/{foodId}")
-    public List<CommentResponse> commentResponses(@PathVariable Long foodId){
+    public List<CommentResponse> commentResponses(@PathVariable UUID foodId){
         return foodService.getCutComments(foodId);
     }
 

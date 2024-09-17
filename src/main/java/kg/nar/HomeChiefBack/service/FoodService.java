@@ -18,9 +18,9 @@ public interface FoodService {
 
     List<ObjectDto> getTypes();
 
-    void comment(Long cutId, String token, String commentTitle);
+    void comment(UUID cutId, String token, String commentTitle);
 
-    List<CommentResponse> getCutComments(Long foodId);
+    List<CommentResponse> getCutComments(UUID foodId);
 
     void reviewFood(String token, ReviewRequest request);
 
@@ -33,4 +33,6 @@ public interface FoodService {
     Boolean like(String token, UUID foodId);
 
     Boolean favorite(String token, UUID foodId);
+
+    FoodType getFoodTypeById(UUID foodTypeId);
 }
