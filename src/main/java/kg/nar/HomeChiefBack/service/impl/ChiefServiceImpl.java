@@ -8,14 +8,12 @@ import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
 import kg.nar.HomeChiefBack.repository.*;
 import kg.nar.HomeChiefBack.repository.address.AddressRepository;
-import kg.nar.HomeChiefBack.repository.address.AddressTypeRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.FileService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +32,6 @@ public class ChiefServiceImpl implements ChiefService {
     private final FileService fileService;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
-    private final AddressTypeRepository addressTypeRepository;
     private final ChiefRepository chiefRepository;
     private final RequestStatusRepository requestStatusRepository;
 
@@ -79,7 +76,7 @@ public class ChiefServiceImpl implements ChiefService {
         chief.setAddress(createAddress(addressRequest));
         chief.setFirstname(addressRequest.getFirstname());
         chief.setLastname(addressRequest.getLastname());
-        Optional<RequestStatus> requestStatusOptional = requestStatusRepository.findByStatus(addressRequest.getStatus());
+        Optional<RequestStatus> requestStatusOptional = requestStatusRepository.findByStatus("requested");
         if (requestStatusOptional.isEmpty())
             throw new NotFoundException("такой статус не найден!", HttpStatus.NOT_FOUND);
         chief.setActivated(requestStatusOptional.get());
@@ -88,16 +85,10 @@ public class ChiefServiceImpl implements ChiefService {
 
     private Address createAddress(AddressRequest addressRequest) {
         Address address = new Address();
-        Optional<AddressType> addressTypeOptional = addressTypeRepository.findByValue(addressRequest.getType());
-        if (addressTypeOptional.isEmpty()) {
-            throw new BadRequestException("AddressType already exists");
-        }
-        address.setType(addressTypeOptional.get());
-        if(addressRepository.findById(addressRequest.getParentId()).isEmpty()){
-            throw new BadRequestException("Parent address does not exist");
-        }
-        address.setParentId(addressRequest.getParentId());
-        address.setValue(addressRequest.getValue());
+        address.setCountry(addressRequest.getCountry());
+        address.setCity(addressRequest.getCity());
+        address.setStreet(addressRequest.getStreet());
+
         return addressRepository.save(address);
     }
 

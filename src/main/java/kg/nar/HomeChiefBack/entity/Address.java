@@ -18,11 +18,9 @@ public class Address {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-
-    private UUID parentId;
-    @ManyToOne
-    private AddressType type;
-    private String value;
+    private String country;
+    private String city;
+    private String street;
 
 
 }

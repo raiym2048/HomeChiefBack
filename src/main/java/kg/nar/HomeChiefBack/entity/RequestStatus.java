@@ -20,4 +20,13 @@ public class RequestStatus {
     private UUID id;
 
     private String status;
+
+    public RequestStatus(UUID uuid, String notVerified) {
+        this.id = uuid;
+        this.status = notVerified;
+    }
+
+    public RequestStatus() {
+
+    }
 }

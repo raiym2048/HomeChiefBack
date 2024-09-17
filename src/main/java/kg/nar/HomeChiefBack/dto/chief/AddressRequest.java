@@ -9,14 +9,13 @@ import java.util.UUID;
 @Setter
 public class AddressRequest {
 
-    private UUID parentId;
 
-    private String type;
-    private String value;
+    private String country;
+    private String city;
+    private String street;
 
     private String firstname;
     private String lastname;
-    private String status;
 
 }
 

@@ -42,13 +42,32 @@ public class ManagerServiceImpl implements ManagerService {
             User user = userRepository.findByChiefId(chief.getId()).get();
             ChiefInfoResponse chiefInfoResponse = new ChiefInfoResponse();
             chiefInfoResponse.setUserId(user.getId());
-            chiefInfoResponse.setAddress(setResponse(chief.getAddress()));
+            chiefInfoResponse.setAddress(chief.getAddress()!=null? getFormattedAddress(chief.getAddress()): null);
             chiefInfoResponse.setFirstName(chief.getFirstname());
             chiefInfoResponse.setLastName(chief.getLastname());
             chiefInfoResponse.setPhone(user.getPhoneNumber());
             chiefInfoResponses.add(chiefInfoResponse);
         }
         return chiefInfoResponses;
+    }
+
+    public String getFormattedAddress(Address address) {
+        // Create a list to store non-empty address components
+        List<String> addressParts = new ArrayList<>();
+
+        // Check each field and add it to the list if it's not null or empty
+        if (address.getCountry() != null && !address.getCountry().isEmpty()) {
+            addressParts.add(address.getCountry());
+        }
+        if (address.getCity() != null && !address.getCity().isEmpty()) {
+            addressParts.add(address.getCity());
+        }
+        if (address.getStreet() != null && !address.getStreet().isEmpty()) {
+            addressParts.add(address.getStreet());
+        }
+
+        // Join the non-empty parts with commas
+        return String.join(", ", addressParts);
     }
 
     @Override
@@ -95,23 +114,6 @@ public class ManagerServiceImpl implements ManagerService {
         return statusMapper.toDtoHistories(requestHistoryRepository.findAll());
     }
 
-    private String setResponse(Address addresses) {
-        StringBuilder response = new StringBuilder();
-            List<String> values = new ArrayList<>();
-            collectValues(addresses, values);
-            Collections.reverse(values);  // Reverse the list to start from the root
-            for (String value : values) {
-                response.append(value);
-            }
 
-        return response.toString(); // todo
-    }
-    private void collectValues(Address address, List<String> values) {
-        if (address != null) {
-            values.add(address.getType().getValue()+": "+  address.getValue()+" ");
-            if (address.getParentId() != null) {
-                addressRepository.findById(address.getParentId()).ifPresent(parent -> collectValues(parent, values));
-            }
-        }
-    }
+
 }

@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface RequestStatusRepository extends JpaRepository<RequestStatus, UUID> {
 
     Optional<RequestStatus> findByStatus(String accepted);
+    Optional<RequestStatus> findFirstByOrderByIdAsc();
+    Optional<RequestStatus> findSecondByOrderByIdAsc();
+    Optional<RequestStatus> findThirdByOrderByIdAsc();
+
 }

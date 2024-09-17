@@ -21,7 +21,7 @@ public class Chief {
     private String lastname;
     @Enumerated(EnumType.STRING)
     private ChiefRank rank;
-    @OneToOne
+    @ManyToOne
     private RequestStatus activated;
     @OneToOne
     private Address address;

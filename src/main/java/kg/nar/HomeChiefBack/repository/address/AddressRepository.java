@@ -10,7 +10,4 @@ import java.util.UUID;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, UUID> {
 
-    List<Address> findAllByValueAndType_Value(String value, String type);
-
-    List<Address> findAllByType_Value(String type);
 }

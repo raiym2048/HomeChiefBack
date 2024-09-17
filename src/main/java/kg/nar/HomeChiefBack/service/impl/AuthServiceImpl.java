@@ -6,19 +6,23 @@ import kg.nar.HomeChiefBack.dto.RegisterRequest;
 import kg.nar.HomeChiefBack.dto.auth.LoginResponse;
 import kg.nar.HomeChiefBack.entity.Chief;
 import kg.nar.HomeChiefBack.entity.Client;
+import kg.nar.HomeChiefBack.entity.RequestStatus;
 import kg.nar.HomeChiefBack.entity.User;
 import kg.nar.HomeChiefBack.enums.ChiefRank;
 import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadCredentialsException;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
+import kg.nar.HomeChiefBack.exception.NotFoundException;
 import kg.nar.HomeChiefBack.repository.ChiefRepository;
 import kg.nar.HomeChiefBack.repository.ClientRepository;
+import kg.nar.HomeChiefBack.repository.RequestStatusRepository;
 import kg.nar.HomeChiefBack.repository.UserRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
     private final ClientRepository clientRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final RequestStatusRepository requestStatusRepository;
     @Override
     public void register(RegisterRequest registerRequest) {
         if (userRepository.existsByPhoneNumber(registerRequest.getPhoneNumber()))
@@ -99,6 +104,10 @@ public class AuthServiceImpl implements AuthService {
     private Chief registerChief() {
         Chief chief = new Chief();
         chief.setRank(ChiefRank.NOT_VERIFIED);
+        Optional<RequestStatus> requestStatusOptional = requestStatusRepository.findByStatus("not verified");
+        if (requestStatusOptional.isEmpty())
+            throw new NotFoundException("status not found, manager did not yet", HttpStatus.NOT_FOUND);
+        chief.setActivated(requestStatusOptional.get());
         return chiefRepository.save(chief);
     }
 }
