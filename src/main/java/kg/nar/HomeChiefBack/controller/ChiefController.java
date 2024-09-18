@@ -2,6 +2,7 @@ package kg.nar.HomeChiefBack.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.Chief;
@@ -23,12 +24,12 @@ public class ChiefController {
     private final ChiefService chiefService;
 
     @PostMapping("/complete")
-    public void complete (@RequestBody AddressRequest addressRequest, @RequestHeader("Authorization") String token){
-        chiefService.completeRegistration(addressRequest, token);
+    public void complete (@RequestBody AddressRequest addressRequest, HttpServletRequest request){
+        chiefService.completeRegistration(addressRequest, request.getHeader("Authorization"));
     }
     @PostMapping(value = "/food/add", consumes = "multipart/form-data")
     public ResponseEntity<?> addFood(
-            @RequestHeader("Authorization") String token,
+            HttpServletRequest request,
             @RequestPart("file") List<MultipartFile> files,
             @RequestPart("data") String foodDataString) throws JsonProcessingException {  // Note: Changed to String to debug
         if (files.size() > 5) {
@@ -38,12 +39,12 @@ public class ChiefController {
         FoodAddRequest foodAddRequest = mapper.readValue(foodDataString, FoodAddRequest.class);
         System.out.println(foodAddRequest.getName());  // Example of accessing the data
 
-        chiefService.addFood(token,files, foodAddRequest);
+        chiefService.addFood(request.getHeader("Authorization"),files, foodAddRequest);
         return ResponseEntity.ok("Food added");
     }
     @GetMapping("/files")
-    public ResponseEntity<?> getFiles(@RequestHeader("Authorization") String token) throws IOException {
-        return ResponseEntity.ok(chiefService.getFiles(token));
+    public ResponseEntity<?> getFiles(HttpServletRequest request) throws IOException {
+        return ResponseEntity.ok(chiefService.getFiles(request.getHeader("Authorization")));
     }
 
     @GetMapping("/info/{userId}")

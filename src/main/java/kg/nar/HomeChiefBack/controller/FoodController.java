@@ -1,6 +1,7 @@
 package kg.nar.HomeChiefBack.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
@@ -25,8 +26,8 @@ public class FoodController {
 
 
     @PostMapping("/comment/{cutId}")
-    public void comment(@RequestHeader("Authorization") String token, @PathVariable UUID cutId, @RequestParam String commentTitle){
-        foodService.comment(cutId, token, commentTitle);
+    public void comment(HttpServletRequest request, @PathVariable UUID cutId, @RequestParam String commentTitle){
+        foodService.comment(cutId, request.getHeader("Authorization"), commentTitle);
     }
 
     @GetMapping("/review/{foodId}")
@@ -35,8 +36,8 @@ public class FoodController {
     }
 
     @PostMapping("/review")
-    public void reviewFood(@RequestHeader("Authorization") String token, @RequestBody ReviewRequest request){
-        foodService.reviewFood(token, request);
+    public void reviewFood(HttpServletRequest httpServletRequest, @RequestBody ReviewRequest request){
+        foodService.reviewFood(httpServletRequest.getHeader("Authorization"), request);
     }
 
     @PostMapping("/type/add")
@@ -52,12 +53,12 @@ public class FoodController {
         foodService.refactor(oldType, newType);
     }
     @PostMapping("/like/{foodId}")
-    public Boolean likeFood(@RequestHeader("Authorization") String token, @PathVariable UUID foodId){
-        return foodService.like(token, foodId);
+    public Boolean likeFood(HttpServletRequest request, @PathVariable UUID foodId){
+        return foodService.like(request.getHeader("Authorization"), foodId);
     }
     @PostMapping("/favorite/{foodId}")
-    public Boolean favoriteFood(@RequestHeader("Authorization") String token, @PathVariable UUID foodId){
-        return foodService.favorite(token, foodId);
+    public Boolean favoriteFood(HttpServletRequest request, @PathVariable UUID foodId){
+        return foodService.favorite(request.getHeader("Authorization"), foodId);
     }
 }
 

@@ -13,11 +13,13 @@ public class LoginResponse {
     private String lastname;
     private UUID userId;
     private String token;
+    private String role;
 
-    public LoginResponse(String firstname, String lastname, UUID userId, String token) {
+    public LoginResponse(String firstname, String lastname, UUID userId, String token, String role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.userId = userId;
         this.token = token;
+        this.role = role;
     }
 }

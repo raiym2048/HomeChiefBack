@@ -1,5 +1,7 @@
 package kg.nar.HomeChiefBack.controller;
 
+import com.sun.net.httpserver.Request;
+import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.bucket.BucketResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
@@ -51,20 +53,20 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/foods")
-    private List<FoodResponse> foodResponses(@RequestHeader(required = false, name = "Authorization") String token) {
-        return foodService.getAll(token);
+    private List<FoodResponse> foodResponses(HttpServletRequest request) {
+        return foodService.getAll(request.getHeader("Authorization"));
     }
 
     @PostMapping("/cart/add")
-    private void addFoodToBucket(@RequestHeader("Authorization") String token,
+    private void addFoodToBucket(HttpServletRequest request,
                                  @RequestParam UUID foodId, @RequestParam int count){
-        clientService.addFoodToBucket(foodId, count, token);
+        clientService.addFoodToBucket(foodId, count, request.getHeader("Authorization"));
 
     }
 
     @GetMapping("/private/cart")
-    private List<BucketResponse> getBucket(@RequestHeader("Authorization") String token){
-        return clientService.getBucket(token);
+    private List<BucketResponse> getBucket(HttpServletRequest request){
+        return clientService.getBucket(request.getHeader("Authorization"));
     }
 
     @Value("${upload.dir}")

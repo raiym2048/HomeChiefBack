@@ -76,8 +76,8 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Invalid email or password");
         }
         if (user.get().getRole().equals(Role.CLIENT))
-            return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(),  user.get().getId(), token);
-        return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(),  user.get().getId(), token);
+            return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(),  user.get().getId(), token, Role.CLIENT.name());
+        return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(),  user.get().getId(), token, Role.CHIEF.name());
     }
 
     @Override
