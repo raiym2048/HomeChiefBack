@@ -15,6 +15,7 @@ public interface FoodService {
     FoodType getFoodTypeByName(String name);
 
     List<FoodResponse> getAll(String token);
+    List<FoodResponse> getAll(String token, UUID foodTypeId);
 
     List<ObjectDto> getTypes();
 

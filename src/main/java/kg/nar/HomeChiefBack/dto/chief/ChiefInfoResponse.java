@@ -2,6 +2,7 @@ package kg.nar.HomeChiefBack.dto.chief;
 
 import lombok.Data;
 
+import java.util.Random;
 import java.util.UUID;
 
 @Data
@@ -13,4 +14,5 @@ public class ChiefInfoResponse {
     private String lastName;
     private String address;
     private Double rating;
+    private Long achievesCount = new Random().nextLong();
 }

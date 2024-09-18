@@ -41,10 +41,7 @@ public class ClientController {
     private final ClientService clientService;
     private final ChiefService chiefService;
 
-    @GetMapping("/foods")
-    private List<FoodResponse> foodResponses(HttpServletRequest request) {
-        return foodService.getAll(request.getHeader("Authorization"));
-    }
+
 
     @PostMapping("/cart/add")
     private void addFoodToBucket(HttpServletRequest request,

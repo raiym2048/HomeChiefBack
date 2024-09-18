@@ -61,6 +61,15 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public List<FoodResponse> getAll(String token, UUID foodTypeId) {
+        User user = null;
+        if (token != null && !token.isEmpty()) {
+            user = authService.getUsernameFromToken(token);
+        }
+
+        return foodMapper.toDtoS(foodRepository.findAllByFoodType_Id(foodTypeId), user);    }
+
+    @Override
     public List<ObjectDto> getTypes() {
         return foodMapper.toDtoStype(foodTypeRepository.findAll());
     }

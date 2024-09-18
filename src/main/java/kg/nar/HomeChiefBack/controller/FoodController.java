@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
+import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,16 @@ import java.util.UUID;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class FoodController {
     private final FoodService foodService;
+    @GetMapping("/foods")
+    private List<FoodResponse> foodResponses(HttpServletRequest request) {
+        return foodService.getAll(request.getHeader("Authorization"));
+    }
+
+    @GetMapping("/byType/{foodTypeId}")
+    private List<FoodResponse> foodResponsesByTypeId(HttpServletRequest request, @PathVariable UUID foodTypeId) {
+        return foodService.getAll(request.getHeader("Authorization"), foodTypeId);
+    }
+
 
     @GetMapping("/types")
     public List<ObjectDto> foodTypes(){

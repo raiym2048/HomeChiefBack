@@ -47,6 +47,7 @@ public class ManagerServiceImpl implements ManagerService {
             chiefInfoResponse.setFirstName(chief.getFirstname());
             chiefInfoResponse.setLastName(chief.getLastname());
             chiefInfoResponse.setPhone(user.getPhoneNumber());
+            chiefInfoResponse.setAchievesCount(new Random().nextLong());
             chiefInfoResponses.add(chiefInfoResponse);
         }
         return chiefInfoResponses;
@@ -128,6 +129,7 @@ public class ManagerServiceImpl implements ManagerService {
             chiefInfoResponse.setFirstName(chief.getFirstname());
             chiefInfoResponse.setLastName(chief.getLastname());
             chiefInfoResponse.setPhone(user.getPhoneNumber());
+            chiefInfoResponse.setAchievesCount(new Random().nextLong());
             chiefInfoResponse.setRating(chief.getAverageRating());
             chiefInfoResponses.add(chiefInfoResponse);
 
