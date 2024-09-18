@@ -17,4 +17,6 @@ public interface ManagerService {
     List<ObjectDto> requestStatuses();
 
     List<RequestHistoryResponse> requestHistory();
+
+    List<ChiefInfoResponse> allChiefs();
 }

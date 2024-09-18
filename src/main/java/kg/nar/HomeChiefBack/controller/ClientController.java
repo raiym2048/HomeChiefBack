@@ -6,6 +6,7 @@ import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.bucket.BucketResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.repository.CutRepository;
+import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.ClientService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
@@ -20,25 +21,12 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,6 +39,7 @@ public class ClientController {
     private final CutRepository postRepository;
     private final FoodService foodService;
     private final ClientService clientService;
+    private final ChiefService chiefService;
 
     @GetMapping("/foods")
     private List<FoodResponse> foodResponses(HttpServletRequest request) {
@@ -99,6 +88,11 @@ public class ClientController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .contentType(MediaType.parseMediaType(contentType))  // Dynamically set the content type
                 .body(resource);
+    }
+
+    @PostMapping("/average")
+    public ObjectDto average(@RequestParam UUID chiefId, @RequestParam int count){
+        return chiefService.setAverage(chiefId, count);
     }
 
 }

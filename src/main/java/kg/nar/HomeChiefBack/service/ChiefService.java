@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.service;
 
+import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.Chief;
@@ -17,4 +18,6 @@ public interface ChiefService {
     Chief chiefGetInfo(UUID userId);
 
     void completeRegistration(AddressRequest addressRequest, String token);
+
+    ObjectDto setAverage(UUID chiefId, int count);
 }

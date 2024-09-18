@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,4 +26,16 @@ public class Chief {
     private RequestStatus activated;
     @OneToOne
     private Address address;
+
+    @ElementCollection
+    List<Double> rating;
+
+    public double getAverageRating() {
+        return rating.stream()
+                .mapToDouble(Double::doubleValue)  // Corrected method reference
+                .average()
+                .orElse(0.0);  // Return 0.0 if there are no ratings
+    }
+
+
 }

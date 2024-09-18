@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.service.impl;
 
+import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.*;
@@ -13,6 +14,7 @@ import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.FileService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,6 +83,18 @@ public class ChiefServiceImpl implements ChiefService {
             throw new NotFoundException("такой статус не найден!", HttpStatus.NOT_FOUND);
         chief.setActivated(requestStatusOptional.get());
         chiefRepository.save(chief);
+    }
+
+    @Override
+    public ObjectDto setAverage(UUID chiefId, int count) {
+        Optional<Chief> chiefOptional = chiefRepository.findById(chiefId);
+        if (chiefOptional.isEmpty())
+            throw new NotFoundException("повар не найден!", HttpStatus.NOT_FOUND);
+        chiefOptional.get().getRating().add((double) count);
+        chiefRepository.save(chiefOptional.get());
+        ObjectDto objectDto = new ObjectDto();
+        objectDto.setName(String.valueOf(chiefOptional.get().getAverageRating()));
+        return objectDto;
     }
 
     private Address createAddress(AddressRequest addressRequest) {
