@@ -184,4 +184,16 @@ public class FoodServiceImpl implements FoodService {
             return foodType.get();
         else
             throw new BadRequestException("Food type not found");    }
+
+    @Override
+    public FoodResponse getById(String token, UUID foodId) {
+        User user = null;
+        if (token != null && !token.isEmpty()) {
+            user = authService.getUsernameFromToken(token);
+        }
+        Optional<Food> foodOptional =
+                foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+        return foodMapper.toDto(foodOptional.get(), user);       }
 }

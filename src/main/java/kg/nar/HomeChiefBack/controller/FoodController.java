@@ -28,6 +28,10 @@ public class FoodController {
     private List<FoodResponse> foodResponsesByTypeId(HttpServletRequest request, @PathVariable UUID foodTypeId) {
         return foodService.getAll(request.getHeader("Authorization"), foodTypeId);
     }
+    @GetMapping("/{foodId}")
+    private FoodResponse foodResponsesById(HttpServletRequest request, @PathVariable UUID foodId) {
+        return foodService.getById(request.getHeader("Authorization"), foodId);
+    }
 
 
     @GetMapping("/types")

@@ -36,4 +36,6 @@ public interface FoodService {
     Boolean favorite(String token, UUID foodId);
 
     FoodType getFoodTypeById(UUID foodTypeId);
+
+    FoodResponse getById(String authorization, UUID foodId);
 }
