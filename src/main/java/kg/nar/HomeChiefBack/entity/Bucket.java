@@ -22,7 +22,7 @@ public class Bucket {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)  // Каскадное удаление
     @JoinColumn(name = "food_id")
     private Food food;
 
