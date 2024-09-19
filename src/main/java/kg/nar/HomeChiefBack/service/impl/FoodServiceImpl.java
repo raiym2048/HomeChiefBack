@@ -5,6 +5,7 @@ import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.entity.*;
+import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
@@ -197,4 +198,15 @@ public class FoodServiceImpl implements FoodService {
         if (foodOptional.isEmpty())
             throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
         return foodMapper.toDto(foodOptional.get(), user);       }
+
+    @Override
+    public void deleteFoodById(UUID foodId, String authorization) {
+        User user =  authService.getUsernameFromToken(authorization);
+        Optional<Food> foodOptional = foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+        if (foodOptional.get().getChief().equals(user.getChief()) || user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.MANAGER))
+            foodRepository.deleteById(foodId);
+
+    }
 }

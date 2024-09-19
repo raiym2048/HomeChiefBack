@@ -1,6 +1,7 @@
 package kg.nar.HomeChiefBack.controller;
 
 
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
@@ -34,6 +35,11 @@ public class FoodController {
     @GetMapping("/{foodId}")
     private FoodResponse foodResponsesById(HttpServletRequest request, @PathVariable UUID foodId) {
         return foodService.getById(request.getHeader("Authorization"), foodId);
+    }
+
+    @DeleteMapping("/delete/{foodId}")
+    public void deleteById(HttpServletRequest request, @PathVariable UUID foodId) {
+        foodService.deleteFoodById(foodId, request.getHeader("Authorization"));
     }
 
 

@@ -39,4 +39,6 @@ public interface FoodService {
     FoodType getFoodTypeById(UUID foodTypeId);
 
     FoodResponse getById(String authorization, UUID foodId);
+
+    void deleteFoodById(UUID foodId, String authorization);
 }
