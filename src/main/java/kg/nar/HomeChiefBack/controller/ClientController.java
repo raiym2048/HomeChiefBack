@@ -82,7 +82,6 @@ public class ClientController {
 
         // Return the file as a download
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .contentType(MediaType.parseMediaType(contentType))  // Dynamically set the content type
                 .body(resource);
     }
