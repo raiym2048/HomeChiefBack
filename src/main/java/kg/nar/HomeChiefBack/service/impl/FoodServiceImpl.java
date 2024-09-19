@@ -12,6 +12,7 @@ import kg.nar.HomeChiefBack.repository.*;
 import kg.nar.HomeChiefBack.service.AuthService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -51,23 +52,23 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public List<FoodResponse> getAll(String token) {
+    public List<FoodResponse> getAll(String token, PageRequest pageRequest) {
         User user = null;
         if (token != null && !token.isEmpty()) {
             user = authService.getUsernameFromToken(token);
         }
 
-        return foodMapper.toDtoS(foodRepository.findAll(), user);
+        return foodMapper.toDtoS(foodRepository.findAll(pageRequest).getContent(), user);
     }
 
     @Override
-    public List<FoodResponse> getAll(String token, UUID foodTypeId) {
+    public List<FoodResponse> getAll(String token, UUID foodTypeId, PageRequest pageRequest) {
         User user = null;
         if (token != null && !token.isEmpty()) {
             user = authService.getUsernameFromToken(token);
         }
 
-        return foodMapper.toDtoS(foodRepository.findAllByFoodType_Id(foodTypeId), user);    }
+        return foodMapper.toDtoS(foodRepository.findAllByFoodType_Id(foodTypeId, pageRequest).getContent(), user);    }
 
     @Override
     public List<ObjectDto> getTypes() {

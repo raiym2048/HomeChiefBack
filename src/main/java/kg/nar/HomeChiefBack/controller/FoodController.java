@@ -8,6 +8,7 @@ import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +21,15 @@ import java.util.UUID;
 public class FoodController {
     private final FoodService foodService;
     @GetMapping("/foods")
-    private List<FoodResponse> foodResponses(HttpServletRequest request) {
-        return foodService.getAll(request.getHeader("Authorization"));
+    private List<FoodResponse> foodResponses(HttpServletRequest request,  @RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size) {
+        return foodService.getAll(request.getHeader("Authorization"), PageRequest.of(page, size));
     }
 
     @GetMapping("/byType/{foodTypeId}")
-    private List<FoodResponse> foodResponsesByTypeId(HttpServletRequest request, @PathVariable UUID foodTypeId) {
-        return foodService.getAll(request.getHeader("Authorization"), foodTypeId);
+    private List<FoodResponse> foodResponsesByTypeId(HttpServletRequest request, @PathVariable UUID foodTypeId,  @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
+        return foodService.getAll(request.getHeader("Authorization"), foodTypeId, PageRequest.of(page, size));
     }
     @GetMapping("/{foodId}")
     private FoodResponse foodResponsesById(HttpServletRequest request, @PathVariable UUID foodId) {

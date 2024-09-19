@@ -5,6 +5,7 @@ import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.entity.FoodType;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +15,8 @@ public interface FoodService {
 
     FoodType getFoodTypeByName(String name);
 
-    List<FoodResponse> getAll(String token);
-    List<FoodResponse> getAll(String token, UUID foodTypeId);
+    List<FoodResponse> getAll(String token, PageRequest pageRequest);
+    List<FoodResponse> getAll(String token, UUID foodTypeId, PageRequest pageRequest);
 
     List<ObjectDto> getTypes();
 
