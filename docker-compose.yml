@@ -5,6 +5,8 @@ networks:
 volumes:
   db-data:
     driver: local
+  upload-data: # Добавляем новый том для хранения загруженных файлов
+    driver: local
 
 services:
   homechief:
@@ -24,6 +26,9 @@ services:
       - '8080:8080'
     networks:
       - homechief
+    volumes:
+      - ./uploads:/home/raiym/IdeaProjects/HomeChiefBack/uploads  # Монтируем директорию для загрузок
+
 
   flyway:
     image: flyway/flyway:latest  # Using the official Flyway image which should have the latest JDBC drivers
