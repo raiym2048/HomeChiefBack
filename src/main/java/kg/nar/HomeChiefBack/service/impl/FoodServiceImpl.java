@@ -205,7 +205,9 @@ public class FoodServiceImpl implements FoodService {
         Optional<Food> foodOptional = foodRepository.findById(foodId);
         if (foodOptional.isEmpty())
             throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+/*
         if (foodOptional.get().getChief().equals(user.getChief()) || user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.MANAGER))
+*///todo
             foodRepository.deleteById(foodId);
 
     }
