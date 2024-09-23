@@ -30,7 +30,6 @@ public class FoodServiceImpl implements FoodService {
     private final FoodRepository foodRepository;
     private final AuthService authService;
     private final CommentRepository commentRepository;
-    private final CutRepository cutRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
 
@@ -76,33 +75,6 @@ public class FoodServiceImpl implements FoodService {
         return foodMapper.toDtoStype(foodTypeRepository.findAll());
     }
 
-    @Override
-    public void comment(UUID cutId, String token, String title) {
-        User user = authService.getUsernameFromToken(token);
-        Optional<Cut> cut = cutRepository.findById(cutId);
-        if (cut.isEmpty())
-            throw new NotFoundException("not found cut with id: "+ cutId, HttpStatus.NOT_FOUND);
-
-        Comments comment = new Comments();
-        comment.setCut(cut.get());
-        comment.setUser(user);
-        comment.setTime(LocalDateTime.now());
-        comment.setTitle(title);
-        commentRepository.save(comment);
-
-        cut.get().getComments().add(comment);
-
-        cutRepository.save(cut.get());
-
-    }
-
-    @Override
-    public List<CommentResponse> getCutComments(UUID cutId) {
-        Optional<Cut> cutOptional = cutRepository.findById(cutId);
-        if (cutOptional.isEmpty())
-            throw new NotFoundException("cut not found with id: "+ cutId, HttpStatus.NOT_FOUND);
-        return foodMapper.commentToDtoS(cutOptional.get());
-    }
 
     @Override
     public void reviewFood(String token, ReviewRequest request) {

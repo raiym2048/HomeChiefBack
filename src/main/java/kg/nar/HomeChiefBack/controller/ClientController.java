@@ -4,8 +4,6 @@ import com.sun.net.httpserver.Request;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.bucket.BucketResponse;
-import kg.nar.HomeChiefBack.dto.food.FoodResponse;
-import kg.nar.HomeChiefBack.repository.CutRepository;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.ClientService;
 import kg.nar.HomeChiefBack.service.FoodService;
@@ -36,8 +34,6 @@ import java.nio.file.Paths;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/client")
 public class ClientController {
-    private final CutRepository postRepository;
-    private final FoodService foodService;
     private final ClientService clientService;
     private final ChiefService chiefService;
 

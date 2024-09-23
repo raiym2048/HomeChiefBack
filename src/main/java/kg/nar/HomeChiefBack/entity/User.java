@@ -42,6 +42,10 @@ public class User implements UserDetails {
     @ManyToMany
     private List<Food> favoriteFoods;
 
+
+    @ManyToMany
+    private List<Cut> favoriteCuts;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (role == null) {

@@ -49,15 +49,6 @@ public class FoodController {
     }
 
 
-    @PostMapping("/comment/{cutId}")
-    public void comment(HttpServletRequest request, @PathVariable UUID cutId, @RequestParam String commentTitle){
-        foodService.comment(cutId, request.getHeader("Authorization"), commentTitle);
-    }
-
-    @GetMapping("/review/{foodId}")
-    public List<CommentResponse> commentResponses(@PathVariable UUID foodId){
-        return foodService.getCutComments(foodId);
-    }
 
     @PostMapping("/review")
     public void reviewFood(HttpServletRequest httpServletRequest, @RequestBody ReviewRequest request){

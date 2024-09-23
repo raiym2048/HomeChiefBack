@@ -25,10 +25,23 @@ public class Cut {
     private double stars;
 
     @ManyToOne
-    private Food food;
+    private Chief chief;
+
+    @OneToMany
+    private List<Food> food;
 
     @OneToMany
     private List<Comments> comments;
+
+
+    @OneToMany
+    private List<Review> reviews;
+
+    @ManyToMany
+    private List<User> likedUsers;
+
+    @ManyToMany
+    private List<User> views;
 
 
 }
