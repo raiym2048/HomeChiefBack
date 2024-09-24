@@ -44,6 +44,10 @@ public class CutController {
         cutService.addCut(request.getHeader("Authorization"),file, cutRequest);
         return ResponseEntity.ok("Cut added");
     }
+    @GetMapping("/{cutId}")
+    public CutResponse cutById(HttpServletRequest request, @PathVariable UUID cutId){
+        return cutService.getById(request.getHeader("Authorization"), cutId);
+    }
 
     @GetMapping("/all")
     private List<CutResponse> foodResponses(HttpServletRequest request, @RequestParam(defaultValue = "0") int page,

@@ -20,4 +20,5 @@ public interface CutService {
 
     void addCut(String authorization, MultipartFile file, CutRequest cutRequest);
 
+    CutResponse getById(String authorization, UUID cutId);
 }

@@ -89,6 +89,19 @@ public class CutServiceImpl implements CutService {
         else throw new BadRequestException("User is not a chief");
     }
 
+    @Override
+    public CutResponse getById(String token, UUID cutId) {
+        User user = null;
+        if (token != null && !token.isEmpty()) {
+            user = authService.getUsernameFromToken(token);
+        }
+        Optional<Cut> cutOptional = cutRepository.findById(cutId);
+        if (cutOptional.isEmpty())
+            throw new NotFoundException("cut not found with id: "+ cutId, HttpStatus.NOT_FOUND);
+
+        return cutMapper.toDto(cutOptional.get(), user);
+    }
+
     private void createCut(Chief chief, CutRequest cutRequest, UUID userId, MultipartFile file) {
         Cut cut = new Cut();
         cut.setChief(chief);
