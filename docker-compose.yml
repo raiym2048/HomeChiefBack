@@ -1,3 +1,4 @@
+
 version: '3.8'
 networks:
   homechief:
@@ -27,8 +28,8 @@ services:
     networks:
       - homechief
     volumes:
-      - ./uploads:/home/raiym/IdeaProjects/HomeChiefBack/uploads  # Монтируем директорию для загрузок
-
+       - ./uploads:/home/admins/StartUps/HomeChief/backend/HomeChiefBack/
+# Монтируем директорию для загрузок
 
   flyway:
     image: flyway/flyway:latest  # Using the official Flyway image which should have the latest JDBC drivers
