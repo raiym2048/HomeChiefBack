@@ -28,7 +28,7 @@ services:
     networks:
       - homechief
     volumes:
-       - ./uploads:/home/admins/StartUps/HomeChief/backend/HomeChiefBack/
+       - ./uploads:/home/admins/StartUps/HomeChief/backend/HomeChiefBack/uploads
 # Монтируем директорию для загрузок
 
   flyway:

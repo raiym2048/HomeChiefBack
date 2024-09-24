@@ -12,3 +12,4 @@ COPY .mvn /app/.mvn/
 RUN chmod +x /app/mvnw
 ENV MAVEN_OPTS="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED --add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED --add-opens jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
 RUN ./mvnw clean package -DskipTests
+RUN mkdir -p /app/uploads  # Создание директории uploads
