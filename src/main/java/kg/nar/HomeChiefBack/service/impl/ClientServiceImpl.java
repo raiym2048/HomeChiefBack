@@ -6,6 +6,7 @@ import kg.nar.HomeChiefBack.entity.Client;
 import kg.nar.HomeChiefBack.entity.Food;
 import kg.nar.HomeChiefBack.entity.User;
 import kg.nar.HomeChiefBack.enums.Role;
+import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import kg.nar.HomeChiefBack.repository.BucketRepository;
 import kg.nar.HomeChiefBack.repository.ClientRepository;
@@ -34,7 +35,7 @@ public class ClientServiceImpl implements ClientService {
     public void addFoodToBucket(UUID foodId, int count, String token) {
         User user = authService.getUsernameFromToken(token);
         if (!user.getRole().equals(Role.CLIENT)) {
-            throw new RuntimeException("User is not client!");
+            throw new BadRequestException("User is not client!");
         }
         Client client = user.getClient();
         List<Bucket> buckets = client.getBuckets();
@@ -56,7 +57,7 @@ public class ClientServiceImpl implements ClientService {
     public List<BucketResponse> getBucket(String token) {
         User user = authService.getUsernameFromToken(token);
         if (!user.getRole().equals(Role.CLIENT)) {
-            throw new RuntimeException("User is not client!");
+            throw new BadRequestException("User is not client!");
         }
         Client client = user.getClient();
         List<Bucket> buckets = client.getBuckets();

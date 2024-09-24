@@ -4,12 +4,14 @@ import com.sun.net.httpserver.Request;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.bucket.BucketResponse;
+import kg.nar.HomeChiefBack.exception.NotFoundException;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.ClientService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,10 +64,10 @@ public class ClientController {
         try {
             resource = new UrlResource(filePath.toUri());
             if (!resource.exists()) {
-                throw new RuntimeException("File not found: " + name);
+                throw new NotFoundException("File not found: " + name, HttpStatus.NOT_FOUND);
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error in file URL: " + name, e);
+            throw new NotFoundException("Error in file URL: " + name, HttpStatus.NOT_FOUND);
         }
 
         // Determine the file's content type

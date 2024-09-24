@@ -1,18 +1,25 @@
 package kg.nar.HomeChiefBack.exception;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@Setter
-public class CustomException extends RuntimeException {
-    private HttpStatus status;
-    private String message;
+public class CustomException extends RuntimeException{
+    private static final long serialVersionUID = 1L;
 
-    public CustomException(String message, HttpStatus status) {
-        super(message);
-        this.status = status;
+    private final String message;
+    private final HttpStatus httpStatus;
+
+    public CustomException(String message, HttpStatus httpStatus) {
         this.message = message;
+        this.httpStatus = httpStatus;
     }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
+
 }

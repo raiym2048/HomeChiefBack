@@ -91,7 +91,7 @@ public class AuthServiceImpl implements AuthService {
         try {
             object = (JSONObject) jsonParser.parse(decoder.decode(chunks[1]));
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException(e.getMessage());
         }
         return userRepository.findByPhoneNumber(String.valueOf(object.get("sub"))).orElseThrow(() -> new BadCredentialsException("No user in database with ur token! ReLogIn pls"));
     }

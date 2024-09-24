@@ -1,20 +1,14 @@
 package kg.nar.HomeChiefBack.exception;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 @RestController
-public class GlobalException {
-    @ExceptionHandler(CustomException.class)
-    @ResponseBody
-    public ResponseEntity<Object> handleCustomException(CustomException ex) {
-        ApiResponse apiResponse = new ApiResponse(ex.getMessage(), ex.getStatus());
-        return new ResponseEntity<>(apiResponse, ex.getStatus());
-    }
+public class GlobalExceptionHandler {
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponse handlerNotFoundException(NotFoundException e) {
@@ -41,6 +35,10 @@ public class GlobalException {
                 e.getMessage());
     }
 
-
+    @ExceptionHandler(BlockedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse handleBlockedException(BlockedException e) {
+        return new ExceptionResponse(HttpStatus.FORBIDDEN, e.getMessage());
+    }
 
 }
