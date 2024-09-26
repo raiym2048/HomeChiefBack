@@ -16,6 +16,7 @@ public interface FoodMapper {
     FoodResponse toDto(Food food, User user);
 
     List<CommentResponse> commentToDtoS(Cut cut);
+    List<CommentResponse> commentToDtoS(Food food);
 
     List<ObjectDto> toDtoStype(List<FoodType> all);
 }

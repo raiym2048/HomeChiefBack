@@ -63,6 +63,15 @@ public class FoodMapperImpl implements FoodMapper{
     }
 
     @Override
+    public List<CommentResponse> commentToDtoS(Food food) {
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for (Comments comments: food.getComments()){
+            commentResponses.add(commentToDto(comments));
+        }
+        return commentResponses;
+    }
+
+    @Override
     public List<ObjectDto> toDtoStype(List<FoodType> all) {
         List<ObjectDto> responses = new ArrayList<>();
         for (FoodType foodType: all){

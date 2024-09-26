@@ -10,5 +10,5 @@ public interface CommentService {
 
     List<CommentResponse> getFoodComments(UUID foodId);
 
-    void delete(String token, UUID foodId, UUID commentId);
+    void delete(String token, UUID commentId);
 }

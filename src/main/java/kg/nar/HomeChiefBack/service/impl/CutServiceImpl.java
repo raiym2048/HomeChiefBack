@@ -38,6 +38,7 @@ public class CutServiceImpl implements CutService {
     private final FoodMapper foodMapper;
     private final CutMapper cutMapper;
 
+
     @Override
     public List<CutResponse> getAll(String token, PageRequest pageRequest) {
         User user = null;
@@ -56,6 +57,14 @@ public class CutServiceImpl implements CutService {
             throw new NotFoundException("cut not found with id: "+ cutId, HttpStatus.NOT_FOUND);
         return foodMapper.commentToDtoS(cutOptional.get());
     }
+    @Override
+    public List<CommentResponse> getFoodComments(UUID foodId) {
+        Optional<Food> foodOptional = foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("cut not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+        return foodMapper.commentToDtoS(foodOptional.get());
+    }
+
 
     @Override
     public void comment(UUID cutId, String token, String title) {
@@ -133,5 +142,20 @@ public class CutServiceImpl implements CutService {
                 return null;
             }
 
+    }
+
+    @Override
+    public Boolean like(String token, UUID foodId) {
+        User user = authService.getUsernameFromToken(token);
+        Optional<Cut> cutOptional = cutRepository.findById(foodId);
+        if (cutOptional.isEmpty())
+            throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+        if (cutOptional.get().getLikedUsers().contains(user)){
+            cutOptional.get().getLikedUsers().remove(user);
+        }else {
+            cutOptional.get().getLikedUsers().add(user);
+        }
+        cutRepository.save(cutOptional.get());
+        return cutOptional.get().getLikedUsers().contains(user);
     }
 }

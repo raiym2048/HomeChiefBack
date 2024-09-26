@@ -4,7 +4,6 @@ package kg.nar.HomeChiefBack.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.cut.CutRequest;
 import kg.nar.HomeChiefBack.dto.cut.CutResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
@@ -49,6 +48,11 @@ public class CutController {
         return cutService.getById(request.getHeader("Authorization"), cutId);
     }
 
+    @PostMapping("/like/{cutId}")
+    public Boolean likeFood(HttpServletRequest request, @PathVariable UUID cutId){
+        return cutService.like(request.getHeader("Authorization"), cutId);
+    }
+
     @GetMapping("/all")
     private List<CutResponse> foodResponses(HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size) {
@@ -57,13 +61,4 @@ public class CutController {
 
 
 
-    @GetMapping("/review/{cutId}")
-    public List<CommentResponse> commentResponses(@PathVariable UUID cutId){
-        return cutService.getCutComments(cutId);
-    }
-
-    @PostMapping("/comment/{cutId}")
-    public void comment(HttpServletRequest request, @PathVariable UUID cutId, @RequestParam String commentTitle){
-        cutService.comment(cutId, request.getHeader("Authorization"), commentTitle);
-    }
 }
