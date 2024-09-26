@@ -34,6 +34,14 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 e.getMessage());
     }
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionResponse handlerUnAuthorizedException(UnauthorizedException e) {
+
+        return new ExceptionResponse(
+                HttpStatus.UNAUTHORIZED,
+                e.getMessage());
+    }
 
     @ExceptionHandler(BlockedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)

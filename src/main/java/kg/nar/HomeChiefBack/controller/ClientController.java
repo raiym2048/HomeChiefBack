@@ -10,6 +10,7 @@ import kg.nar.HomeChiefBack.service.ClientService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,8 +50,9 @@ public class ClientController {
     }
 
     @GetMapping("/private/cart")
-    private List<BucketResponse> getBucket(HttpServletRequest request){
-        return clientService.getBucket(request.getHeader("Authorization"));
+    private List<BucketResponse> getBucket(HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size){
+        return clientService.getBucket(request.getHeader("Authorization"), PageRequest.of(page, size));
     }
 
     @Value("${upload.dir}")

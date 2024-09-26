@@ -16,6 +16,7 @@ import kg.nar.HomeChiefBack.service.ClientService;
 import kg.nar.HomeChiefBack.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -54,13 +55,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<BucketResponse> getBucket(String token) {
+    public List<BucketResponse> getBucket(String token, PageRequest pageRequest) {
         User user = authService.getUsernameFromToken(token);
         if (!user.getRole().equals(Role.CLIENT)) {
             throw new BadRequestException("User is not client!");
         }
         Client client = user.getClient();
-        List<Bucket> buckets = client.getBuckets();
+        List<Bucket> buckets = bucketRepository.findByClient(client, pageRequest).getContent();
         return getResponse(buckets);
     }
 

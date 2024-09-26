@@ -1,7 +1,10 @@
 package kg.nar.HomeChiefBack.repository;
 
 import kg.nar.HomeChiefBack.entity.Bucket;
+import kg.nar.HomeChiefBack.entity.Client;
 import kg.nar.HomeChiefBack.entity.Food;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,5 +15,7 @@ import java.util.UUID;
 @Repository
 public interface BucketRepository extends JpaRepository<Bucket, UUID>{
     List<Bucket> findByClientId(UUID clientId);
+    Page<Bucket> findByClient(Client client, Pageable pageable);
+
 
 }

@@ -13,6 +13,7 @@ import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadCredentialsException;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
+import kg.nar.HomeChiefBack.exception.UnauthorizedException;
 import kg.nar.HomeChiefBack.repository.ChiefRepository;
 import kg.nar.HomeChiefBack.repository.ClientRepository;
 import kg.nar.HomeChiefBack.repository.RequestStatusRepository;
@@ -82,6 +83,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User getUsernameFromToken(String token) {
+        if (token==null||token.isEmpty())
+            throw new UnauthorizedException("token is null or empty!");
 
         String[] chunks = token.substring(7).split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
