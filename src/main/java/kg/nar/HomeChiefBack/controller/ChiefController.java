@@ -51,4 +51,9 @@ public class ChiefController {
     public Chief chiefInfo(@PathVariable UUID userId){
         return chiefService.chiefGetInfo(userId);
     }
+
+    @PutMapping("/food/update/{foodId}")
+    public void updateFood(@PathVariable UUID foodId,FoodAddRequest request, HttpServletRequest httpServletRequest ){
+        chiefService.updateFood(foodId, request, httpServletRequest.getHeader("Authorization"));
+    }
 }

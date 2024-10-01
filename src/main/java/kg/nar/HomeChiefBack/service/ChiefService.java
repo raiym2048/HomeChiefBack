@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
@@ -20,4 +21,6 @@ public interface ChiefService {
     void completeRegistration(AddressRequest addressRequest, String token);
 
     ObjectDto setAverage(UUID chiefId, int count);
+
+    void updateFood(UUID foodId, FoodAddRequest request, String token);
 }

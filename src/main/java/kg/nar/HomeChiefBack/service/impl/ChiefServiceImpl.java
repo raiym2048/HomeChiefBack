@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
@@ -36,6 +37,7 @@ public class ChiefServiceImpl implements ChiefService {
     private final AddressRepository addressRepository;
     private final ChiefRepository chiefRepository;
     private final RequestStatusRepository requestStatusRepository;
+    private final FoodTypeRepository foodTypeRepository;
 
     @Override
     public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
@@ -95,6 +97,27 @@ public class ChiefServiceImpl implements ChiefService {
         ObjectDto objectDto = new ObjectDto();
         objectDto.setName(String.valueOf(chiefOptional.get().getAverageRating()));
         return objectDto;
+    }
+
+    @Override
+    public void updateFood(UUID foodId, FoodAddRequest request, String token) {
+        User user = authService.getUsernameFromToken(token);
+        if (!user.getRole().equals(Role.CHIEF)) {
+            throw new BadRequestException("User is not a chief");
+        }//todo check its chief food or not
+        Optional<Food> foodOptional = foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("food не найден!", HttpStatus.NOT_FOUND);
+        foodOptional.get().setName(request.getName());
+        foodOptional.get().setDescription(request.getDescription());
+        foodOptional.get().setPrice(request.getPrice());
+        foodOptional.get().setDiscount(request.getDiscount());
+        Optional<FoodType> foodTypeOptional = foodTypeRepository.findById(request.getFoodTypeId());
+        if (foodTypeOptional.isEmpty())
+            throw new NotFoundException("food type не найден!", HttpStatus.NOT_FOUND);
+
+        foodOptional.get().setFoodType(foodTypeOptional.get());
+        foodRepository.save(foodOptional.get());
     }
 
     private Address createAddress(AddressRequest addressRequest) {
