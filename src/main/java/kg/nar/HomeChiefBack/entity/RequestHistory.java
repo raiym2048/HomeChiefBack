@@ -24,6 +24,6 @@ public class RequestHistory {
     @OneToOne
     private Chief chief;
     private String comment;
-    private LocalDateTime localDateTime = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
     private String modifiedBy;
 }

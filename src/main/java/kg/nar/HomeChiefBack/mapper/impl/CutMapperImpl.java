@@ -6,6 +6,7 @@ import kg.nar.HomeChiefBack.entity.User;
 import kg.nar.HomeChiefBack.mapper.CutMapper;
 import kg.nar.HomeChiefBack.repository.CutRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CutMapperImpl implements CutMapper {
-    private final CutRepository cutRepository;
+    @Autowired
+    private  CutRepository cutRepository;
 
 
     @Override

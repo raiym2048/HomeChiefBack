@@ -93,7 +93,7 @@ public class ManagerServiceImpl implements ManagerService {
         requestHistory.setComment(comment);
         requestHistory.setChief(chief);
         requestHistory.setModifiedBy(user.getUsername());
-        requestHistory.setLocalDateTime(LocalDateTime.now());
+        requestHistory.setCreatedAt(LocalDateTime.now());
         requestHistoryRepository.save(requestHistory);
     }
 

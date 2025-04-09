@@ -7,6 +7,7 @@ import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import kg.nar.HomeChiefBack.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class FoodMapperImpl implements FoodMapper{
-    private final FoodRepository foodRepository;
+    @Autowired
+    private  FoodRepository foodRepository;
     @Override
     public List<FoodResponse> toDtoS(List<Food> all, User user) {
         List<FoodResponse> foodResponses = new ArrayList<>();

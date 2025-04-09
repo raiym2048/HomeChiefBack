@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,10 +29,74 @@ public class User implements UserDetails {
     private UUID id;
     private String password;
     private String phoneNumber;
-    @Unique
     private String username;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setUsername( String username) {
+        this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Chief getChief() {
+        return chief;
+    }
+
+    public void setChief(Chief chief) {
+        this.chief = chief;
+    }
+
+    public List<Food> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(List<Food> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
+    }
+
+    public List<Cut> getFavoriteCuts() {
+        return favoriteCuts;
+    }
+
+    public void setFavoriteCuts(List<Cut> favoriteCuts) {
+        this.favoriteCuts = favoriteCuts;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     @OneToOne
     private Client client;
     @OneToOne

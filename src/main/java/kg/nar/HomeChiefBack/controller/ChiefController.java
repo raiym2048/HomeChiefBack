@@ -42,6 +42,11 @@ public class ChiefController {
         chiefService.addFood(request.getHeader("Authorization"),files, foodAddRequest);
         return ResponseEntity.ok("Food added");
     }
+
+    @PutMapping("/update/{foodId}")
+    public void updateFood(HttpServletRequest request, @PathVariable UUID foodId, FoodAddRequest foodAddRequest){
+        chiefService.updateFood(foodAddRequest, foodId, request.getHeader("Authorization"));
+    }
     @GetMapping("/files")
     public ResponseEntity<?> getFiles(HttpServletRequest request) throws IOException {
         return ResponseEntity.ok(chiefService.getFiles(request.getHeader("Authorization")));

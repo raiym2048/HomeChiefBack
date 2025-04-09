@@ -20,4 +20,6 @@ public interface ChiefService {
     void completeRegistration(AddressRequest addressRequest, String token);
 
     ObjectDto setAverage(UUID chiefId, int count);
+
+    void updateFood(FoodAddRequest foodAddRequest, UUID foodId, String authorization);
 }

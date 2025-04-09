@@ -1,6 +1,5 @@
 package kg.nar.HomeChiefBack.controller;
 
-import com.sun.net.httpserver.Request;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.bucket.BucketResponse;

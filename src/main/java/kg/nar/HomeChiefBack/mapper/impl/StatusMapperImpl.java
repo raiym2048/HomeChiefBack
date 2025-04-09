@@ -32,7 +32,7 @@ public class StatusMapperImpl implements StatusMapper {
 
     private RequestHistoryResponse toDtoHistory(RequestHistory history) {
         RequestHistoryResponse response = new RequestHistoryResponse();
-        response.setTime(history.getLocalDateTime());
+        response.setTime(history.getCreatedAt());
         response.setComment(history.getComment());
         response.setRequestStatus(history.getRequestStatus()!=null? history.
                 getRequestStatus().getStatus(): null);

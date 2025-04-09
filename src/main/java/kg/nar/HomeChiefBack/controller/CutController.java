@@ -11,6 +11,7 @@ import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.service.CutService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ import java.util.UUID;
 @RequestMapping("/cut")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class CutController {
-
-    private final CutService cutService;
+    @Autowired
+    private  CutService cutService;
 
     @PostMapping(value = "/add", consumes = "multipart/form-data")
     public ResponseEntity<?> addFood(

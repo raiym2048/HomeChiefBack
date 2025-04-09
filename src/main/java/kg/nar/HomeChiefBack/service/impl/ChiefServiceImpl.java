@@ -36,6 +36,7 @@ public class ChiefServiceImpl implements ChiefService {
     private final AddressRepository addressRepository;
     private final ChiefRepository chiefRepository;
     private final RequestStatusRepository requestStatusRepository;
+    private final FoodTypeRepository foodTypeRepository;
 
     @Override
     public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
@@ -95,6 +96,27 @@ public class ChiefServiceImpl implements ChiefService {
         ObjectDto objectDto = new ObjectDto();
         objectDto.setName(String.valueOf(chiefOptional.get().getAverageRating()));
         return objectDto;
+    }
+
+    @Override
+    public void updateFood(FoodAddRequest request, UUID foodId, String authorization) {
+        User user = authService.getUsernameFromToken(authorization);
+        Optional<Food> foodOptional = foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("товар не найден!", HttpStatus.NOT_FOUND);
+        if (!user.getRole().equals(Role.CHIEF) || !foodOptional.get().getChief().equals(user.getChief())) {
+            throw new BadRequestException("User is not a chief or this food created by another chief!");
+        }
+        foodOptional.get().setName(request.getName());
+        foodOptional.get().setDescription(request.getDescription());
+        foodOptional.get().setPrice(request.getPrice());
+        foodOptional.get().setDiscount(request.getDiscount());
+        Optional<FoodType> foodTypeOptional = foodTypeRepository.findById(request.getFoodTypeId());
+        if (foodTypeOptional.isEmpty())
+            throw new NotFoundException("тип товара не найден!", HttpStatus.NOT_FOUND);
+        foodOptional.get().setFoodType(foodTypeOptional.get());
+        foodRepository.save(foodOptional.get());
+
     }
 
     private Address createAddress(AddressRequest addressRequest) {

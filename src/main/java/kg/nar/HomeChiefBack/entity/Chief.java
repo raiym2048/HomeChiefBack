@@ -20,6 +20,63 @@ public class Chief {
 
     private String firstname;
     private String lastname;
+
+    public ChiefRank getRank() {
+        return rank;
+    }
+
+    public void setRank(ChiefRank rank) {
+        this.rank = rank;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public RequestStatus getActivated() {
+        return activated;
+    }
+
+    public void setActivated(RequestStatus activated) {
+        this.activated = activated;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Double> getRating() {
+        return rating;
+    }
+
+    public void setRating(List<Double> rating) {
+        this.rating = rating;
+    }
+
     @Enumerated(EnumType.STRING)
     private ChiefRank rank;
     @ManyToOne

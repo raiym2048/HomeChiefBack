@@ -1,8 +1,6 @@
 package kg.nar.HomeChiefBack.dto;
 
-import jakarta.persistence.OneToOne;
-import kg.nar.HomeChiefBack.entity.Chief;
-import kg.nar.HomeChiefBack.entity.RequestStatus;
+
 import lombok.Getter;
 import lombok.Setter;
 
