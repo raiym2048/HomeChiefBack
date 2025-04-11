@@ -3,6 +3,7 @@ package kg.nar.HomeChiefBack.service.impl;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.comment.ReviewRequest;
+import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.enums.Role;
@@ -11,13 +12,16 @@ import kg.nar.HomeChiefBack.exception.NotFoundException;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import kg.nar.HomeChiefBack.repository.*;
 import kg.nar.HomeChiefBack.service.AuthService;
+import kg.nar.HomeChiefBack.service.FileService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +36,7 @@ public class FoodServiceImpl implements FoodService {
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+    private final FileService fileService;
 
     @Override
     public FoodType getFoodType(String type) {
@@ -70,10 +75,6 @@ public class FoodServiceImpl implements FoodService {
 
         return foodMapper.toDtoS(foodRepository.findAllByFoodType_Id(foodTypeId, pageRequest).getContent(), user);    }
 
-    @Override
-    public List<ObjectDto> getTypes() {
-        return foodMapper.toDtoStype(foodTypeRepository.findAll());
-    }
 
 
     @Override
@@ -94,31 +95,7 @@ public class FoodServiceImpl implements FoodService {
         foodRepository.save(foodOptional.get());
     }
 
-    @Override
-    public void addType(String type) {
-        Optional<FoodType> foodType = foodTypeRepository.findByName(type);
-        if (foodType.isEmpty()){
-            FoodType newFoodType = new FoodType();
-            newFoodType.setName(type);
-            foodTypeRepository.save(newFoodType);
-        }
 
-    }
-
-    @Override
-    public void deleteType(String type) {
-        foodTypeRepository.deleteByName(type);
-    }
-
-    @Override
-    public void refactor(String oldType, String newType) {
-        Optional<FoodType> foodType = foodTypeRepository.findByName(oldType);
-        if (foodType.isEmpty())
-            throw new BadRequestException("такой тип не существует!: "+ oldType);
-        foodType.get().setName(newType);
-        foodTypeRepository.save(foodType.get());
-
-    }
 
     @Override
     public Boolean like(String token, UUID foodId) {
@@ -182,5 +159,64 @@ public class FoodServiceImpl implements FoodService {
 *///todo
             foodRepository.deleteById(foodId);
 
+    }
+    @Override
+    public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
+        Optional.ofNullable(token).orElseThrow(() -> new BadRequestException("Token is required"));
+        Optional.ofNullable(foodAddRequest).orElseThrow(() -> new BadRequestException("FoodAddRequest is required"));
+        User user = authService.getUsernameFromToken(token);
+        if (user.getRole().equals(Role.CHIEF)) {
+            Chief chief = user.getChief();
+            createFood(chief, foodAddRequest, user.getId(), files);
+        }
+        else throw new BadRequestException("User is not a chief");
+    }
+    @Override
+    public void updateFood(FoodAddRequest request, UUID foodId, String authorization) {
+        User user = authService.getUsernameFromToken(authorization);
+        Optional<Food> foodOptional = foodRepository.findById(foodId);
+        if (foodOptional.isEmpty())
+            throw new NotFoundException("товар не найден!", HttpStatus.NOT_FOUND);
+        if (!user.getRole().equals(Role.CHIEF) || !foodOptional.get().getChief().equals(user.getChief())) {
+            throw new BadRequestException("User is not a chief or this food created by another chief!");
+        }
+        foodOptional.get().setName(request.getName());
+        foodOptional.get().setDescription(request.getDescription());
+        foodOptional.get().setPrice(request.getPrice());
+        foodOptional.get().setDiscount(request.getDiscount());
+        Optional<FoodType> foodTypeOptional = foodTypeRepository.findById(request.getFoodTypeId());
+        if (foodTypeOptional.isEmpty())
+            throw new NotFoundException("тип товара не найден!", HttpStatus.NOT_FOUND);
+        foodOptional.get().setFoodType(foodTypeOptional.get());
+        foodRepository.save(foodOptional.get());
+
+    }
+
+    private void createFood(Chief chief, FoodAddRequest foodAddRequest, UUID userId, List<MultipartFile> files) {
+        Food food = new Food();
+        food.setChief(chief);
+        food.setName(foodAddRequest.getName());
+        food.setPrice(foodAddRequest.getPrice());
+        food.setDiscount(foodAddRequest.getDiscount());
+        food.setFoodType(getFoodTypeById(foodAddRequest.getFoodTypeId()));
+        food.setImages(uploadFoodsImages(files, userId));
+        food.setDescription(foodAddRequest.getDescription());
+        foodRepository.save(food);
+
+    }
+    private List<String> uploadFoodsImages(List<MultipartFile> files, UUID userId) {
+        List<String> images = new ArrayList<>();
+        int i = 0;
+        for (MultipartFile file : files) {
+            try {
+                images.add(fileService.uploadFile(file, userId, i));
+                i++;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return images;
     }
 }

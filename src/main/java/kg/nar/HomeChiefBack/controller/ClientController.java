@@ -33,53 +33,8 @@ import java.nio.file.Paths;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/client")
 public class ClientController {
-    private final ClientService clientService;
     private final ChiefService chiefService;
 
-
-
-    @PostMapping("/cart/add")
-    private void addFoodToBucket(HttpServletRequest request,
-                                 @RequestParam UUID foodId, @RequestParam int count){
-        clientService.addFoodToBucket(foodId, count, request.getHeader("Authorization"));
-
-    }
-
-    @GetMapping("/private/cart")
-    private List<BucketResponse> getBucket(HttpServletRequest request){
-        return clientService.getBucket(request.getHeader("Authorization"));
-    }
-
-    @Value("${upload.dir}")
-    private String uploadDir;
-
-    @GetMapping("/file")
-    public ResponseEntity<Resource> getFile(@RequestParam String name) throws IOException {
-        Path filePath = Paths.get(uploadDir).resolve(name).normalize();
-        Resource resource;
-
-        try {
-            resource = new UrlResource(filePath.toUri());
-            if (!resource.exists()) {
-                throw new RuntimeException("File not found: " + name);
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error in file URL: " + name, e);
-        }
-
-        // Determine the file's content type
-        String contentType = Files.probeContentType(filePath);
-
-        // Default to binary stream if type is not determined
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        // Return the file as a download
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))  // Dynamically set the content type
-                .body(resource);
-    }
 
     @PostMapping("/average")
     public ObjectDto average(@RequestParam UUID chiefId, @RequestParam int count){

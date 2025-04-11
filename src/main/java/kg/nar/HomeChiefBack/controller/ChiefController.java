@@ -27,30 +27,7 @@ public class ChiefController {
     public void complete (@RequestBody AddressRequest addressRequest, HttpServletRequest request){
         chiefService.completeRegistration(addressRequest, request.getHeader("Authorization"));
     }
-    @PostMapping(value = "/food/add", consumes = "multipart/form-data")
-    public ResponseEntity<?> addFood(
-            HttpServletRequest request,
-            @RequestPart("file") List<MultipartFile> files,
-            @RequestPart("data") String foodDataString) throws JsonProcessingException {  // Note: Changed to String to debug
-        if (files.size() > 5) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot upload more than 5 files");
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        FoodAddRequest foodAddRequest = mapper.readValue(foodDataString, FoodAddRequest.class);
-        System.out.println(foodAddRequest.getName());  // Example of accessing the data
 
-        chiefService.addFood(request.getHeader("Authorization"),files, foodAddRequest);
-        return ResponseEntity.ok("Food added");
-    }
-
-    @PutMapping("/update/{foodId}")
-    public void updateFood(HttpServletRequest request, @PathVariable UUID foodId, FoodAddRequest foodAddRequest){
-        chiefService.updateFood(foodAddRequest, foodId, request.getHeader("Authorization"));
-    }
-    @GetMapping("/files")
-    public ResponseEntity<?> getFiles(HttpServletRequest request) throws IOException {
-        return ResponseEntity.ok(chiefService.getFiles(request.getHeader("Authorization")));
-    }
 
     @GetMapping("/info/{userId}")
     public Chief chiefInfo(@PathVariable UUID userId){

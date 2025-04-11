@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ClientService {
-    void addFoodToBucket(UUID foodId, int count, String token);
-
-    List<BucketResponse> getBucket(String token);
 
     Resource getFiles(String name) throws IOException;
 }

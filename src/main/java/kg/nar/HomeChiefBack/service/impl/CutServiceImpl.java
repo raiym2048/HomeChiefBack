@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -87,6 +88,12 @@ public class CutServiceImpl implements CutService {
             createCut(chief, cutRequest, user.getId(), file);
         }
         else throw new BadRequestException("User is not a chief");
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id) {
+        cutRepository.deleteById(id);
     }
 
     private void createCut(Chief chief, CutRequest cutRequest, UUID userId, MultipartFile file) {

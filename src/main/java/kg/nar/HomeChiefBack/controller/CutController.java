@@ -63,4 +63,9 @@ public class CutController {
     public void comment(HttpServletRequest request, @PathVariable UUID cutId, @RequestParam String commentTitle){
         cutService.comment(cutId, request.getHeader("Authorization"), commentTitle);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable UUID id){
+        cutService.delete(id);
+    }
 }

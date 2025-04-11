@@ -20,4 +20,5 @@ public interface CutService {
 
     void addCut(String authorization, MultipartFile file, CutRequest cutRequest);
 
+    void delete(UUID id);
 }
