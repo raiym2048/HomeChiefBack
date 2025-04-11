@@ -9,4 +9,6 @@ public interface CartService {
     void addFoodToBucket(UUID foodId, int count, String authorization);
 
     List<BucketResponse> getBucket(String authorization);
+
+    void removeFoodFromCard(UUID foodId, String authorization);
 }

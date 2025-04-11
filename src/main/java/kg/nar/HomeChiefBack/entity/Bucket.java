@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,9 +23,8 @@ public class Bucket {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)  // Каскадное удаление
-    @JoinColumn(name = "food_id")
-    private Food food;
+    @OneToMany()  // Каскадное удаление
+    private List<Food> foods;
 
     private int count;  // Number of each food item in the bucket
 }

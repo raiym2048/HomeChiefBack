@@ -49,9 +49,6 @@ public class FoodController {
         foodService.deleteFoodById(foodId, request.getHeader("Authorization"));
     }
 
-
-
-
     @PostMapping("/review")
     public void reviewFood(HttpServletRequest httpServletRequest, @RequestBody ReviewRequest request){
         foodService.reviewFood(httpServletRequest.getHeader("Authorization"), request);

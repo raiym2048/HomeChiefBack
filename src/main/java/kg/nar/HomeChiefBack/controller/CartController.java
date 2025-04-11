@@ -1,3 +1,4 @@
+/*
 package kg.nar.HomeChiefBack.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,14 +18,20 @@ import java.util.UUID;
 public class CartController {
     private final CartService cartService;
 
-    @PostMapping("/cart/add")
+    @PostMapping("/add")
     private void addFoodToBucket(HttpServletRequest request,
                                  @RequestParam UUID foodId, @RequestParam int count){
         cartService.addFoodToBucket(foodId, count, request.getHeader("Authorization"));
 
     }
-    @GetMapping("/private/cart")
+    @GetMapping("/all")
     private List<BucketResponse> getBucket(HttpServletRequest request){
         return cartService.getBucket(request.getHeader("Authorization"));
     }
+
+    @DeleteMapping("/remove/{foodId}")
+    public void removeFoodFromCard(@PathVariable UUID foodId, HttpServletRequest request){
+        cartService.removeFoodFromCard(foodId, request.getHeader("Authorization"));
+    }
 }
+*/

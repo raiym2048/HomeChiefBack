@@ -20,8 +20,8 @@ public class Client {
 
     private String firstname;
     private String lastname;
-    @OneToMany(mappedBy = "client")
-    private List<Bucket> buckets;  // Buckets associated with this client
+    @OneToOne
+    private Bucket bucket;  // Buckets associated with this client
 
 
 }
