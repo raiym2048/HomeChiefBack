@@ -3,6 +3,7 @@ package kg.nar.HomeChiefBack.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
@@ -62,6 +63,16 @@ public class FoodController {
     public Boolean favoriteFood(HttpServletRequest request, @PathVariable UUID foodId){
         return foodService.favorite(request.getHeader("Authorization"), foodId);
     }
+    @Operation(
+            summary = "Add new food item",
+            description = "data: {\n" +
+                    "  \"name\": \"Grilled Chicken Wrap\",\n" +
+                    "  \"description\": \"Delicious grilled chicken with fresh veggies in a soft tortilla wrap.\",\n" +
+                    "  \"price\": 899,\n" +
+                    "  \"discount\": 10,\n" +
+                    "  \"foodTypeId\": \"af31e649-405b-4400-8497-aceca397d15e\"\n" +
+                    "}\n"
+    )
     @PostMapping(value = "/food/add", consumes = "multipart/form-data")
     public ResponseEntity<?> addFood(
             HttpServletRequest request,
