@@ -33,7 +33,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+        public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChiefRepository chiefRepository;
@@ -94,6 +94,17 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException(e);
         }
         return userRepository.findByPhoneNumber(String.valueOf(object.get("sub"))).orElseThrow(() -> new BadCredentialsException("No user in database with ur token! ReLogIn pls"));
+    }
+
+    @Override
+    public void createAdmin() {
+        if (userRepository.existsByUsername("admin"))
+            throw new BadCredentialsException("Admin already exists");
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        user.setUsername("admin");
+        user.setPassword(passwordEncoder.encode("admin"));
+        userRepository.save(user);
     }
 
     private Client registerClient() {

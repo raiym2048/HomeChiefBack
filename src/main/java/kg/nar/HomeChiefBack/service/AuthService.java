@@ -11,4 +11,6 @@ public interface AuthService {
     LoginResponse login(LoginRequest registerRequest);
 
     User getUsernameFromToken(String token);
+
+    void createAdmin();
 }

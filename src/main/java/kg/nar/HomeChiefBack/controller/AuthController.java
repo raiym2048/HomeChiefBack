@@ -24,5 +24,8 @@ public class AuthController {
     public LoginResponse login(@RequestBody LoginRequest registerRequest) {
         return authService.login(registerRequest);
     }
-
+    @PostMapping("/create/admin")
+    public void createAdmin(){
+        authService.createAdmin();
+    }
 }
