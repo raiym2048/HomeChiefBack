@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +38,10 @@ public class FoodTypeServiceImpl implements FoodTypeService {
         foodTypeRepository.deleteByName(type);
     }
     @Override
-    public void refactor(String oldType, String newType) {
-        Optional<FoodType> foodType = foodTypeRepository.findByName(oldType);
+    public void refactor(UUID uuid, String newType) {
+        Optional<FoodType> foodType = foodTypeRepository.findById(uuid);
         if (foodType.isEmpty())
-            throw new BadRequestException("такой тип не существует!: "+ oldType);
+            throw new BadRequestException("такой тип не существует!: "+ uuid);
         foodType.get().setName(newType);
         foodTypeRepository.save(foodType.get());
 

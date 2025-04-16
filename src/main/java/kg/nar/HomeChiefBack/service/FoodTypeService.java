@@ -3,6 +3,7 @@ package kg.nar.HomeChiefBack.service;
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface FoodTypeService {
     List<ObjectDto> getTypes();
@@ -11,5 +12,5 @@ public interface FoodTypeService {
 
     void deleteType(String type);
 
-    void refactor(String oldType, String newType);
+    void refactor(UUID uuid, String newType);
 }
