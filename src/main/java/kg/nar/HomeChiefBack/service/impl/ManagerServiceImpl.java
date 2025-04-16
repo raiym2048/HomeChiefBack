@@ -116,25 +116,4 @@ public class ManagerServiceImpl implements ManagerService {
         return statusMapper.toDtoHistories(requestHistoryRepository.findAll());
     }
 
-    @Override
-    public List<ChiefInfoResponse> allChiefs() {
-        List<Chief> chiefs = chiefRepository.findAll();
-        List<ChiefInfoResponse> chiefInfoResponses = new ArrayList<>();
-        for (Chief chief : chiefs) {
-            User user = userRepository.findByChiefId(chief.getId()).get();
-            ChiefInfoResponse chiefInfoResponse = new ChiefInfoResponse();
-            chiefInfoResponse.setChiefId(chief.getId());
-            chiefInfoResponse.setUserId(user.getId());
-            chiefInfoResponse.setAddress(chief.getAddress()!=null? getFormattedAddress(chief.getAddress()): null);
-            chiefInfoResponse.setFirstName(chief.getFirstname());
-            chiefInfoResponse.setLastName(chief.getLastname());
-            chiefInfoResponse.setPhone(user.getPhoneNumber());
-            chiefInfoResponse.setAchievesCount(new Random().nextLong());
-            chiefInfoResponse.setRating(chief.getAverageRating());
-            chiefInfoResponses.add(chiefInfoResponse);
-
-        }
-        return chiefInfoResponses;    }
-
-
 }

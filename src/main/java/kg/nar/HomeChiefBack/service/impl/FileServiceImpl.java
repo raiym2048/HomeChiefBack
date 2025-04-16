@@ -2,6 +2,10 @@ package kg.nar.HomeChiefBack.service.impl;
 
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+
+import kg.nar.HomeChiefBack.entity.User;
+import kg.nar.HomeChiefBack.repository.UserRepository;
+import kg.nar.HomeChiefBack.service.AuthService;
 import org.springframework.beans.factory.annotation.Value;
 import kg.nar.HomeChiefBack.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +25,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
+    private final UserRepository userRepository;
+    private final AuthService authService;
     @Value("${upload.dir}")
     private String uploadDir;
     //private String uploadDir = "/Users/bambook/Downloads/HomeChiefBack";
@@ -83,6 +89,18 @@ public class FileServiceImpl implements FileService {
     @Override
     public Resource downloadFile(String objectName) throws IOException {
         return null;
+    }
+
+    @Override
+    public void setImage(MultipartFile file, String authorization) {
+        User user = authService.getUsernameFromToken(authorization);
+        try {
+            user.setImage(uploadFile(file, user.getId(), 1));
+            userRepository.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 }

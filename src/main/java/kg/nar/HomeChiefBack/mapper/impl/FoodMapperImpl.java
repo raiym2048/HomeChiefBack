@@ -35,6 +35,7 @@ public class FoodMapperImpl implements FoodMapper{
         foodResponse.setDescription(food.getDescription());
         foodResponse.setPrice(food.getPrice());
         foodResponse.setFoodType(food.getFoodType().getName());
+        foodResponse.setChiefId(food.getChief().getId());
         if (!food.getImages().isEmpty()) {
             foodResponse.setImage(food.getImages().get(0));
             food.getImages().remove(0);

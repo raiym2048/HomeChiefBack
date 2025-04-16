@@ -29,10 +29,6 @@ public class ManagerController {
          managerService.accept(token, chiefId, accepted, comment);
     }
 
-    @GetMapping("/chiefs")
-    List<ChiefInfoResponse> allChiefs() {
-        return managerService.allChiefs();
-    }
 
 
 

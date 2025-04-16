@@ -13,6 +13,7 @@ public class FoodResponse {
     private String name;
     private String description;
     private int price;
+    private UUID chiefId;
 
     public UUID getId() {
         return id;

@@ -15,4 +15,5 @@ public class ChiefInfoResponse {
     private String address;
     private Double rating;
     private Long achievesCount = new Random().nextLong();
+    private String image;
 }
