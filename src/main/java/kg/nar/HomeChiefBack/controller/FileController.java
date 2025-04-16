@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,8 +59,8 @@ public class FileController {
     }
 
 
-    @PostMapping("/set-profile-image")
-    public void setProfileImage(@RequestParam("file") MultipartFile file, HttpServletRequest request){
+    @PostMapping(value = "/set-profile-image", consumes = "multipart/form-data")
+    public void setProfileImage(  @RequestPart("file") MultipartFile file, HttpServletRequest request){
         fileService.setImage(file, request.getHeader("Authorization"));
     }
 
