@@ -24,9 +24,9 @@ public class FoodTypeController {
     public void addType(@RequestParam String type){
         foodTypeService.addType(type);
     }
-    @DeleteMapping("/type/delete")
-    public void deleteType(@RequestParam String type){
-        foodTypeService.deleteType(type);
+    @DeleteMapping("/type/delete/{id}")
+    public void deleteType(@PathVariable UUID id){
+        foodTypeService.deleteType(id);
     }
     @PutMapping("/type/refactor/{id}")
     public void refactorType(@PathVariable UUID id, @RequestParam String newType){

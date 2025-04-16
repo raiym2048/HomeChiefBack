@@ -10,7 +10,7 @@ public interface FoodTypeService {
 
     void addType(String type);
 
-    void deleteType(String type);
+    void deleteType(UUID uuid);
 
     void refactor(UUID uuid, String newType);
 }

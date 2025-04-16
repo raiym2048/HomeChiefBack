@@ -34,8 +34,8 @@ public class FoodTypeServiceImpl implements FoodTypeService {
     }
 
     @Override
-    public void deleteType(String type) {
-        foodTypeRepository.deleteByName(type);
+    public void deleteType(UUID uuid) {
+        foodTypeRepository.deleteById(uuid);
     }
     @Override
     public void refactor(UUID uuid, String newType) {
