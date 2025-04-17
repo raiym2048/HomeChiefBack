@@ -75,6 +75,8 @@ import java.util.Optional;
         } catch (Exception e) {
             throw new BadRequestException("Invalid email or password");
         }
+        if (user.get().getRole() == Role.ADMIN)
+            return new LoginResponse("admin", "admin",  user.get().getId(), token, Role.ADMIN.name());
         if (user.get().getRole().equals(Role.CLIENT))
             return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(),  user.get().getId(), token, Role.CLIENT.name());
         return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(),  user.get().getId(), token, Role.CHIEF.name());
@@ -103,6 +105,7 @@ import java.util.Optional;
         User user = new User();
         user.setRole(Role.ADMIN);
         user.setUsername("admin");
+        user.setPhoneNumber("admin");
         user.setPassword(passwordEncoder.encode("admin"));
         userRepository.save(user);
     }
