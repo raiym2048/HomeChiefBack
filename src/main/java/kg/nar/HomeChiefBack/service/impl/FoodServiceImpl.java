@@ -33,7 +33,6 @@ public class FoodServiceImpl implements FoodService {
     private final FoodMapper foodMapper;
     private final FoodRepository foodRepository;
     private final AuthService authService;
-    private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final FileService fileService;

@@ -1,23 +1,27 @@
 package kg.nar.HomeChiefBack.mapper.impl;
 
 import kg.nar.HomeChiefBack.dto.ObjectDto;
+import kg.nar.HomeChiefBack.dto.chief.ChiefInfoResponse;
 import kg.nar.HomeChiefBack.dto.comment.CommentResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodResponse;
 import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import kg.nar.HomeChiefBack.repository.FoodRepository;
+import kg.nar.HomeChiefBack.repository.UserRepository;
+import kg.nar.HomeChiefBack.service.ChiefService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
 public class FoodMapperImpl implements FoodMapper{
-    @Autowired
-    private  FoodRepository foodRepository;
+    private final UserRepository userRepository;
+
+    private final FoodRepository foodRepository;
     @Override
     public List<FoodResponse> toDtoS(List<Food> all, User user) {
         List<FoodResponse> foodResponses = new ArrayList<>();
@@ -35,14 +39,13 @@ public class FoodMapperImpl implements FoodMapper{
         foodResponse.setDescription(food.getDescription());
         foodResponse.setPrice(food.getPrice());
         foodResponse.setFoodType(food.getFoodType().getName());
-        foodResponse.setChiefId(food.getChief().getId());
+        foodResponse.setChiefInfo(toResponse(food.getChief()));
         if (!food.getImages().isEmpty()) {
             foodResponse.setImage(food.getImages().get(0));
             food.getImages().remove(0);
             foodResponse.setAdditionalImage(food.getImages());
         }
         foodResponse.setDiscount(food.getDiscount());
-        foodResponse.setChiefName(food.getChief().getFirstname());
 
         if (user!=null) {
             foodResponse.setLiked(food.getLikedUsers().contains(user));
@@ -89,4 +92,38 @@ public class FoodMapperImpl implements FoodMapper{
         commentResponse.setId(comments.getId());
         return commentResponse;
     }
+    @Override
+    public ChiefInfoResponse toResponse(Chief chief) {
+        User user = userRepository.findByChiefId(chief.getId()).get();
+        ChiefInfoResponse chiefInfoResponse = new ChiefInfoResponse();
+        chiefInfoResponse.setChiefId(chief.getId());
+        chiefInfoResponse.setUserId(user.getId());
+        chiefInfoResponse.setAddress(chief.getAddress()!=null? getFormattedAddress(chief.getAddress()): null);
+        chiefInfoResponse.setFirstName(chief.getFirstname());
+        chiefInfoResponse.setLastName(chief.getLastname());
+        chiefInfoResponse.setPhone(user.getPhoneNumber());
+        chiefInfoResponse.setAchievesCount(new Random().nextLong());
+        chiefInfoResponse.setRating(chief.getAverageRating());
+        chiefInfoResponse.setImage(user.getImage());
+        return chiefInfoResponse;
+    }
+    public String getFormattedAddress(Address address) {
+        // Create a list to store non-empty address components
+        List<String> addressParts = new ArrayList<>();
+
+        // Check each field and add it to the list if it's not null or empty
+        if (address.getCountry() != null && !address.getCountry().isEmpty()) {
+            addressParts.add(address.getCountry());
+        }
+        if (address.getCity() != null && !address.getCity().isEmpty()) {
+            addressParts.add(address.getCity());
+        }
+        if (address.getStreet() != null && !address.getStreet().isEmpty()) {
+            addressParts.add(address.getStreet());
+        }
+
+        // Join the non-empty parts with commas
+        return String.join(", ", addressParts);
+    }
+
 }

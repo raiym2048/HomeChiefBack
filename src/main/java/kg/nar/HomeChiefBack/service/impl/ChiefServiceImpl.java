@@ -8,6 +8,7 @@ import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
+import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import kg.nar.HomeChiefBack.repository.*;
 import kg.nar.HomeChiefBack.repository.address.AddressRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
@@ -15,7 +16,6 @@ import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.FileService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +35,7 @@ public class ChiefServiceImpl implements ChiefService {
     private final ChiefRepository chiefRepository;
     private final RequestStatusRepository requestStatusRepository;
     private final FoodTypeRepository foodTypeRepository;
+    private final FoodMapper foodMapper;
 
     @Override
     public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
@@ -160,18 +161,9 @@ public class ChiefServiceImpl implements ChiefService {
         List<Chief> chiefs = chiefRepository.findAll();
         List<ChiefInfoResponse> chiefInfoResponses = new ArrayList<>();
         for (Chief chief : chiefs) {
-            User user = userRepository.findByChiefId(chief.getId()).get();
-            ChiefInfoResponse chiefInfoResponse = new ChiefInfoResponse();
-            chiefInfoResponse.setChiefId(chief.getId());
-            chiefInfoResponse.setUserId(user.getId());
-            chiefInfoResponse.setAddress(chief.getAddress()!=null? getFormattedAddress(chief.getAddress()): null);
-            chiefInfoResponse.setFirstName(chief.getFirstname());
-            chiefInfoResponse.setLastName(chief.getLastname());
-            chiefInfoResponse.setPhone(user.getPhoneNumber());
-            chiefInfoResponse.setAchievesCount(new Random().nextLong());
-            chiefInfoResponse.setRating(chief.getAverageRating());
-            chiefInfoResponses.add(chiefInfoResponse);
-            chiefInfoResponse.setImage(user.getImage());
+
+
+            chiefInfoResponses.add(foodMapper.toResponse(chief));
 
 
         }
@@ -180,22 +172,5 @@ public class ChiefServiceImpl implements ChiefService {
 
 
 
-    public String getFormattedAddress(Address address) {
-        // Create a list to store non-empty address components
-        List<String> addressParts = new ArrayList<>();
 
-        // Check each field and add it to the list if it's not null or empty
-        if (address.getCountry() != null && !address.getCountry().isEmpty()) {
-            addressParts.add(address.getCountry());
-        }
-        if (address.getCity() != null && !address.getCity().isEmpty()) {
-            addressParts.add(address.getCity());
-        }
-        if (address.getStreet() != null && !address.getStreet().isEmpty()) {
-            addressParts.add(address.getStreet());
-        }
-
-        // Join the non-empty parts with commas
-        return String.join(", ", addressParts);
-    }
 }
