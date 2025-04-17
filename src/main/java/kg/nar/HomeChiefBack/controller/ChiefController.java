@@ -21,6 +21,8 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chief")
+@CrossOrigin(origins = "*", maxAge = 3600)
+
 public class ChiefController {
     private final ChiefService chiefService;
 
