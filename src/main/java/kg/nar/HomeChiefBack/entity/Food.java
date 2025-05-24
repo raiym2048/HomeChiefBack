@@ -3,6 +3,7 @@ package kg.nar.HomeChiefBack.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Food {
     @Id
     @GeneratedValue(generator = "UUID")

@@ -188,6 +188,7 @@ public class FoodServiceImpl implements FoodService {
         if (foodTypeOptional.isEmpty())
             throw new NotFoundException("тип товара не найден!", HttpStatus.NOT_FOUND);
         foodOptional.get().setFoodType(foodTypeOptional.get());
+        System.out.println("the food tostring: "+foodOptional.get().toString());
         foodRepository.save(foodOptional.get());
 
     }

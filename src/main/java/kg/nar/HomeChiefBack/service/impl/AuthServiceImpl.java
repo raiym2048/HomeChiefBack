@@ -82,6 +82,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User getUsernameFromToken(String token) {
+        if (token == null)
+            throw new BadRequestException("token is required!");
 
         String[] chunks = token.substring(7).split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
