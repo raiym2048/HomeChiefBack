@@ -185,6 +185,7 @@ public class FoodServiceImpl implements FoodService {
         if (!user.getRole().equals(Role.CHIEF) || !foodOptional.get().getChief().equals(user.getChief())) {
             throw new BadRequestException("User is not a chief or this food created by another chief!");
         }
+        System.out.println("the food request: "+request.toString());
         foodOptional.get().setName(request.getName());
         foodOptional.get().setDescription(request.getDescription());
         foodOptional.get().setPrice(request.getPrice());
