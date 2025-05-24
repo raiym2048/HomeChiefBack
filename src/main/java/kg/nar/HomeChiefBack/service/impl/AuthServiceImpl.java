@@ -33,7 +33,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+        public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChiefRepository chiefRepository;
@@ -75,6 +75,8 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             throw new BadRequestException("Invalid email or password");
         }
+        if (user.get().getRole() == Role.ADMIN)
+            return new LoginResponse("admin", "admin",  user.get().getId(), token, Role.ADMIN.name());
         if (user.get().getRole().equals(Role.CLIENT))
             return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(),  user.get().getId(), token, Role.CLIENT.name());
         return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(),  user.get().getId(), token, Role.CHIEF.name());
@@ -96,6 +98,18 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException(e);
         }
         return userRepository.findByPhoneNumber(String.valueOf(object.get("sub"))).orElseThrow(() -> new BadCredentialsException("No user in database with ur token! ReLogIn pls"));
+    }
+
+    @Override
+    public void createAdmin() {
+        if (userRepository.existsByUsername("admin"))
+            throw new BadCredentialsException("Admin already exists");
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        user.setUsername("admin");
+        user.setPhoneNumber("admin");
+        user.setPassword(passwordEncoder.encode("admin"));
+        userRepository.save(user);
     }
 
     private Client registerClient() {

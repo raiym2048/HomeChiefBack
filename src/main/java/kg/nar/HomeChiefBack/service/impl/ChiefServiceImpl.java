@@ -2,11 +2,13 @@ package kg.nar.HomeChiefBack.service.impl;
 
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
+import kg.nar.HomeChiefBack.dto.chief.ChiefInfoResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.enums.Role;
 import kg.nar.HomeChiefBack.exception.BadRequestException;
 import kg.nar.HomeChiefBack.exception.NotFoundException;
+import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import kg.nar.HomeChiefBack.repository.*;
 import kg.nar.HomeChiefBack.repository.address.AddressRepository;
 import kg.nar.HomeChiefBack.service.AuthService;
@@ -14,16 +16,12 @@ import kg.nar.HomeChiefBack.service.ChiefService;
 import kg.nar.HomeChiefBack.service.FileService;
 import kg.nar.HomeChiefBack.service.FoodService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +35,7 @@ public class ChiefServiceImpl implements ChiefService {
     private final ChiefRepository chiefRepository;
     private final RequestStatusRepository requestStatusRepository;
     private final FoodTypeRepository foodTypeRepository;
+    private final FoodMapper foodMapper;
 
     @Override
     public void addFood(String token, List<MultipartFile> files, FoodAddRequest foodAddRequest) {
@@ -156,4 +155,22 @@ public class ChiefServiceImpl implements ChiefService {
 
         return images;
     }
+
+    @Override
+    public List<ChiefInfoResponse> allChiefs() {
+        List<Chief> chiefs = chiefRepository.findAll();
+        List<ChiefInfoResponse> chiefInfoResponses = new ArrayList<>();
+        for (Chief chief : chiefs) {
+
+
+            chiefInfoResponses.add(foodMapper.toResponse(chief));
+
+
+        }
+        return chiefInfoResponses;
+    }
+
+
+
+
 }

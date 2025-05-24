@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private String username;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String image;
 
     public Client getClient() {
         return client;

@@ -18,5 +18,4 @@ public interface ManagerService {
 
     List<RequestHistoryResponse> requestHistory();
 
-    List<ChiefInfoResponse> allChiefs();
 }

@@ -1,5 +1,6 @@
 package kg.nar.HomeChiefBack.repository;
 
+import kg.nar.HomeChiefBack.entity.Food;
 import kg.nar.HomeChiefBack.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByChiefId(UUID id);
 
     boolean existsByUsername(String username);
+
+    List<User> findAllByFavoriteFoodsContaining(Food food);
 }

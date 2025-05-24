@@ -6,10 +6,10 @@ volumes:
   db-data:
     driver: local
   upload-data: # Добавляем новый том для хранения загруженных файлов
-    driver: local
 
 services:
   homechief:
+
     image: homechief-homechief
     build:
       context: .
@@ -27,7 +27,7 @@ services:
     networks:
       - homechief
     volumes:
-      - ./uploads:/home/raiym/IdeaProjects/HomeChiefBack/uploads  # Монтируем директорию для загрузок
+      - upload-data:/app/uploads  # 👈 так будет храниться независимо от пересборки
 
 
   flyway:

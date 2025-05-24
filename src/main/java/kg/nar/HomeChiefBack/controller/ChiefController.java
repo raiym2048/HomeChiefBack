@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
+import kg.nar.HomeChiefBack.dto.chief.ChiefInfoResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.Chief;
 import kg.nar.HomeChiefBack.service.ChiefService;
@@ -20,6 +21,8 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chief")
+@CrossOrigin(origins = "*", maxAge = 3600)
+
 public class ChiefController {
     private final ChiefService chiefService;
 
@@ -33,4 +36,11 @@ public class ChiefController {
     public Chief chiefInfo(@PathVariable UUID userId){
         return chiefService.chiefGetInfo(userId);
     }
+
+
+    @GetMapping("/chiefs")
+    List<ChiefInfoResponse> allChiefs() {
+        return chiefService.allChiefs();
+    }
+
 }

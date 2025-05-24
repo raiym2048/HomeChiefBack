@@ -33,7 +33,6 @@ public class FoodServiceImpl implements FoodService {
     private final FoodMapper foodMapper;
     private final FoodRepository foodRepository;
     private final AuthService authService;
-    private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final FileService fileService;
@@ -154,6 +153,12 @@ public class FoodServiceImpl implements FoodService {
         Optional<Food> foodOptional = foodRepository.findById(foodId);
         if (foodOptional.isEmpty())
             throw new NotFoundException("food not found with id: "+ foodId, HttpStatus.NOT_FOUND);
+        List<User> users = userRepository.findAllByFavoriteFoodsContaining(foodOptional.get());
+        for (User u : users) {
+            u.getFavoriteFoods().remove(foodOptional.get());
+        }
+        userRepository.saveAll(users);  // если используешь Spring Data
+
 /*
         if (foodOptional.get().getChief().equals(user.getChief()) || user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.MANAGER))
 *///todo

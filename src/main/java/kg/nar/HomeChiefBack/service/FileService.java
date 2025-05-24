@@ -13,4 +13,6 @@ public interface FileService {
     List<String> listFiles(UUID userId)throws IOException;
 
     Resource downloadFile(String name) throws IOException;
+
+    void setImage(MultipartFile file, String authorization);
 }

@@ -2,6 +2,7 @@ package kg.nar.HomeChiefBack.service;
 
 import kg.nar.HomeChiefBack.dto.ObjectDto;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
+import kg.nar.HomeChiefBack.dto.chief.ChiefInfoResponse;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.Chief;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,4 +23,7 @@ public interface ChiefService {
     ObjectDto setAverage(UUID chiefId, int count);
 
     void updateFood(FoodAddRequest foodAddRequest, UUID foodId, String authorization);
+
+    List<ChiefInfoResponse> allChiefs();
+
 }

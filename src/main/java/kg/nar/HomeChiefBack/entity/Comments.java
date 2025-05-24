@@ -57,7 +57,7 @@ public class Comments {
     private UUID id;
 
     private LocalDateTime time;
-    @OneToOne
+    @ManyToOne
     private User user;
 
     @OneToOne
