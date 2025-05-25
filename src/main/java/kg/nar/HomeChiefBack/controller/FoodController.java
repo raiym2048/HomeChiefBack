@@ -90,7 +90,7 @@ public class FoodController {
     }
 
     @PutMapping("/update/{foodId}")
-    public void updateFood(HttpServletRequest request, @PathVariable UUID foodId, FoodAddRequest foodAddRequest){
+    public void updateFood(HttpServletRequest request, @PathVariable UUID foodId,@RequestBody FoodAddRequest foodAddRequest){
         foodService.updateFood(foodAddRequest, foodId, request.getHeader("Authorization"));
     }
 

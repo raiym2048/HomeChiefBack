@@ -1,6 +1,7 @@
 package kg.nar.HomeChiefBack.dto.food;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -15,5 +16,6 @@ public class FoodAddRequest {
     private String description;
     private int price;
     private int discount;
+    @NonNull
     private UUID foodTypeId;
 }
