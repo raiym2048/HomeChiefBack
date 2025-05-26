@@ -1,8 +1,10 @@
 package kg.nar.HomeChiefBack.service.impl;
 
 import kg.nar.HomeChiefBack.dto.ObjectDto;
+import kg.nar.HomeChiefBack.dto.address.AddressDTO;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.chief.ChiefInfoResponse;
+import kg.nar.HomeChiefBack.dto.chief.UpdateRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.enums.Role;
@@ -170,7 +172,24 @@ public class ChiefServiceImpl implements ChiefService {
         return chiefInfoResponses;
     }
 
+    @Override
+    public void updateProfile(UpdateRequest request, String authorization) {
+        User user = authService.getUsernameFromToken(authorization);
 
+        user.getChief().setFirstname(request.getFirstname());
+        user.getChief().setLastname(request.getLastname());
+        user.getChief().setAddress(saveAddress(request.getAddress()));
+        chiefRepository.save(user.getChief());
+    }
+
+    private Address saveAddress(AddressDTO address) {
+        Address address1 = new Address();
+        address.setCity(address.getCity());
+        address.setCountry(address.getCountry());
+        address.setStreet(address.getStreet());
+        addressRepository.save(address1);
+        return address1;
+    }
 
 
 }

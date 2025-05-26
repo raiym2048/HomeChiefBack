@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.nar.HomeChiefBack.dto.chief.AddressRequest;
 import kg.nar.HomeChiefBack.dto.chief.ChiefInfoResponse;
+import kg.nar.HomeChiefBack.dto.chief.UpdateRequest;
 import kg.nar.HomeChiefBack.dto.food.FoodAddRequest;
 import kg.nar.HomeChiefBack.entity.Chief;
 import kg.nar.HomeChiefBack.service.ChiefService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,10 @@ public class ChiefController {
     @GetMapping("/chiefs")
     List<ChiefInfoResponse> allChiefs() {
         return chiefService.allChiefs();
+    }
+    @PostMapping("/profile")
+    public void updateProfile(@RequestBody UpdateRequest request, HttpServletRequest httpServletRequest){
+        chiefService.updateProfile(request, httpServletRequest.getHeader("Authorization"));
     }
 
 }
