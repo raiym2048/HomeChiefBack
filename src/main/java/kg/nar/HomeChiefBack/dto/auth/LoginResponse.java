@@ -14,12 +14,14 @@ public class LoginResponse {
     private UUID userId;
     private String token;
     private String role;
+    private String photo;
 
-    public LoginResponse(String firstname, String lastname, UUID userId, String token, String role) {
+    public LoginResponse(String firstname, String lastname, UUID userId, String token, String role, String image) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.userId = userId;
         this.token = token;
         this.role = role;
+        this.photo = image;
     }
 }

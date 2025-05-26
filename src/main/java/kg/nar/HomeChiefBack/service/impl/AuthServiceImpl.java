@@ -76,10 +76,10 @@ import java.util.Optional;
             throw new BadRequestException("Invalid email or password");
         }
         if (user.get().getRole() == Role.ADMIN)
-            return new LoginResponse("admin", "admin",  user.get().getId(), token, Role.ADMIN.name());
+            return new LoginResponse("admin", "admin",  user.get().getId(), token, Role.ADMIN.name(), user.get().getImage());
         if (user.get().getRole().equals(Role.CLIENT))
-            return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(),  user.get().getId(), token, Role.CLIENT.name());
-        return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(),  user.get().getId(), token, Role.CHIEF.name());
+            return new LoginResponse(user.get().getClient().getFirstname(), user.get().getClient().getLastname(),  user.get().getId(), token, Role.CLIENT.name(), user.get().getImage());
+        return new LoginResponse(user.get().getChief().getFirstname(), user.get().getChief().getLastname(),  user.get().getId(), token, Role.CHIEF.name(), user.get().getImage());
     }
 
     @Override
