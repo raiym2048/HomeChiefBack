@@ -182,6 +182,28 @@ public class ChiefServiceImpl implements ChiefService {
         chiefRepository.save(user.getChief());
     }
 
+    @Override
+    public ChiefInfoResponse getProfile(String authorization) {
+        User user = authService.getUsernameFromToken(authorization);
+        if (user.getRole().equals(Role.CLIENT))
+            throw new BadRequestException("this api not for client!");
+        Double averageRating = null;
+        if (user.getRole().equals(Role.CHIEF)){
+            List<Double> ratings = user.getChief().getRating();
+             averageRating = ratings.stream()
+                    .mapToDouble(Double::doubleValue)
+                    .average()
+                    .orElse(0.0);
+
+        }
+
+        return user.getRole().equals(Role.CHIEF)? new ChiefInfoResponse(user.getId(), user.getChief().getId(),
+                user.getPhoneNumber(), user.getChief().getFirstname(), user.getChief().getLastname(),
+                foodMapper.getFormattedAddress(user.getChief().getAddress()),
+                averageRating, user.getImage())
+                : new ChiefInfoResponse();
+    }
+
     private Address saveAddress(AddressDTO address) {
         Address address1 = new Address();
         address.setCity(address.getCity());

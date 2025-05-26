@@ -48,5 +48,9 @@ public class ChiefController {
     public void updateProfile(@RequestBody UpdateRequest request, HttpServletRequest httpServletRequest){
         chiefService.updateProfile(request, httpServletRequest.getHeader("Authorization"));
     }
+    @GetMapping("/profile")
+    public ChiefInfoResponse profile(HttpServletRequest httpServletRequest){
+        return chiefService.getProfile(httpServletRequest.getHeader("Authorization"));
+    }
 
 }

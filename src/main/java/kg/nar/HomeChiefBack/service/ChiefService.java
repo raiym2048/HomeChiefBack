@@ -28,4 +28,6 @@ public interface ChiefService {
     List<ChiefInfoResponse> allChiefs();
 
     void updateProfile(UpdateRequest request, String authorization);
+
+    ChiefInfoResponse getProfile(String authorization);
 }

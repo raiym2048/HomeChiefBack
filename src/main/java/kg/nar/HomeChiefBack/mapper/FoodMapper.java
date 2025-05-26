@@ -18,4 +18,6 @@ public interface FoodMapper {
     List<ObjectDto> toDtoStype(List<FoodType> all);
 
     ChiefInfoResponse toResponse(Chief chief);
+
+    String getFormattedAddress(Address address);
 }

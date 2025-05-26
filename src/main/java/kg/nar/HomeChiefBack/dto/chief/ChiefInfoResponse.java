@@ -14,6 +14,21 @@ public class ChiefInfoResponse {
     private String lastName;
     private String address;
     private Double rating;
+
+    public ChiefInfoResponse() {
+    }
+
+    public ChiefInfoResponse(UUID userId, UUID chiefId, String phone, String firstName, String lastName, String address, Double rating, String image) {
+        this.userId = userId;
+        this.chiefId = chiefId;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.rating = rating;
+        this.image = image;
+    }
+
     private Long achievesCount = new Random().nextLong();
     private String image;
 }

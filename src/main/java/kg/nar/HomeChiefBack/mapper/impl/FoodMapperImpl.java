@@ -8,7 +8,6 @@ import kg.nar.HomeChiefBack.entity.*;
 import kg.nar.HomeChiefBack.mapper.FoodMapper;
 import kg.nar.HomeChiefBack.repository.FoodRepository;
 import kg.nar.HomeChiefBack.repository.UserRepository;
-import kg.nar.HomeChiefBack.service.ChiefService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -107,23 +106,10 @@ public class FoodMapperImpl implements FoodMapper{
         chiefInfoResponse.setImage(user.getImage());
         return chiefInfoResponse;
     }
+    @Override
     public String getFormattedAddress(Address address) {
         // Create a list to store non-empty address components
-        List<String> addressParts = new ArrayList<>();
-
-        // Check each field and add it to the list if it's not null or empty
-        if (address.getCountry() != null && !address.getCountry().isEmpty()) {
-            addressParts.add(address.getCountry());
-        }
-        if (address.getCity() != null && !address.getCity().isEmpty()) {
-            addressParts.add(address.getCity());
-        }
-        if (address.getStreet() != null && !address.getStreet().isEmpty()) {
-            addressParts.add(address.getStreet());
-        }
-
-        // Join the non-empty parts with commas
-        return String.join(", ", addressParts);
+        return address.getCountry() +" " + address.getCity() +" " + address.getStreet();
     }
 
 }
